@@ -11,7 +11,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
+import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -36,10 +36,10 @@ function ResponsiveAppBar() {
     };
 
     return (
-        <AppBar position="static">
+        <AppBar position="fixed">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    <AdbIcon
+                    <AirplaneTicketIcon
                         sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}
                     />
                     <Typography
@@ -57,7 +57,7 @@ function ResponsiveAppBar() {
                             textDecoration: 'none',
                         }}
                     >
-                        LOGO
+                        tickets
                     </Typography>
 
                     <Box
@@ -106,7 +106,7 @@ function ResponsiveAppBar() {
                             ))}
                         </Menu>
                     </Box>
-                    <AdbIcon
+                    <AirplaneTicketIcon
                         sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }}
                     />
                     <Typography
@@ -125,7 +125,7 @@ function ResponsiveAppBar() {
                             textDecoration: 'none',
                         }}
                     >
-                        LOGO
+                        online ticket shop
                     </Typography>
                     <Box
                         sx={{
