@@ -8,8 +8,11 @@ const styles = {
         justify-content: center;
         align-items: center;
         padding: ${customTypography.smallSpacing};
-        margin: 2rem;
-        margin-top: 5rem;
+        margin: 0 2rem;
+        cursor: pointer;
+        @media (max-width: 768px) {
+            margin: 0 1rem;
+        }
     `,
     buttonsContainer: css`
         display: flex;

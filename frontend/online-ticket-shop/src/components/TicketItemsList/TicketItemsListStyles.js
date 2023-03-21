@@ -2,6 +2,10 @@ import { css } from '@emotion/css';
 import customTypography from '../../cssdesigns';
 
 const styles = {
+    container: css`
+        margin-top: 3rem;
+    `,
+
     mainContainer: css`
         display: flex;
         flex-direction: row;
@@ -14,6 +18,9 @@ const styles = {
         &::-webkit-scrollbar {
             display: none;
         }
+    `,
+    header: css`
+        margin: 1rem;
     `,
 };
 

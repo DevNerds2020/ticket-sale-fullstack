@@ -8,13 +8,12 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
 
-const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+// const pages = ['Products', 'Pricing', 'Blog'];
+const settings = ['Profile', 'reservations', 'Logout'];
 
 function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -94,7 +93,7 @@ function ResponsiveAppBar() {
                                 display: { xs: 'block', md: 'none' },
                             }}
                         >
-                            {pages.map((page) => (
+                            {/* {pages.map((page) => (
                                 <MenuItem
                                     key={page}
                                     onClick={handleCloseNavMenu}
@@ -103,7 +102,7 @@ function ResponsiveAppBar() {
                                         {page}
                                     </Typography>
                                 </MenuItem>
-                            ))}
+                            ))} */}
                         </Menu>
                     </Box>
                     <AirplaneTicketIcon
@@ -133,7 +132,7 @@ function ResponsiveAppBar() {
                             display: { xs: 'none', md: 'flex' },
                         }}
                     >
-                        {pages.map((page) => (
+                        {/* {pages.map((page) => (
                             <Button
                                 key={page}
                                 onClick={handleCloseNavMenu}
@@ -141,7 +140,7 @@ function ResponsiveAppBar() {
                             >
                                 {page}
                             </Button>
-                        ))}
+                        ))} */}
                     </Box>
 
                     <Box sx={{ flexGrow: 0 }}>
