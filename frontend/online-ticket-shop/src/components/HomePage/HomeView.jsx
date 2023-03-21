@@ -6,9 +6,9 @@ export const HomeView = () => {
     return (
         <div>
             <ResponsiveAppBar />
-            <TicketItemsListView />
-            <TicketItemsListView />
-            <TicketItemsListView />
+            <TicketItemsListView title={'air plane tickets'} />
+            <TicketItemsListView title={'train tickets'} />
+            <TicketItemsListView title={'hotel reservations'} />
         </div>
     );
 };

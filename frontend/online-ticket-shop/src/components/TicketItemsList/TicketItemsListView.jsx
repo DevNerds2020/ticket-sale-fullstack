@@ -69,13 +69,13 @@ const sampleData = [
 ];
 
 const TicketItemsListView = (props) => {
-    const { items } = props;
+    const { items, title } = props;
     console.log('%c Line:10 🍯 items', 'color:#6ec1c2', items);
 
     return (
         <Box className={styles.container}>
             <Box className={styles.header}>
-                <Typography variant="h6">Tickets</Typography>
+                <Typography variant="h6">{title}</Typography>
             </Box>
             <Box className={styles.mainContainer}>
                 {sampleData.map((item, index) => (
@@ -91,4 +91,5 @@ const TicketItemsListView = (props) => {
 export default TicketItemsListView;
 TicketItemsListView.propTypes = {
     items: PropTypes.array.isRequired,
+    title: PropTypes.string.isRequired,
 };

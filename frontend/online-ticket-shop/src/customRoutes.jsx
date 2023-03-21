@@ -18,6 +18,9 @@ const router = createBrowserRouter([
         path: '/signup',
         element: <SignUpController />,
     },
+    {
+        path: '/ticket/:id',
+    },
 ]);
 
 export default router;

@@ -21,6 +21,10 @@ const styles = {
     `,
     header: css`
         margin: 1rem;
+        cursor: pointer;
+        &:hover {
+            transform: scale(1.3);
+        }
     `,
 };
 

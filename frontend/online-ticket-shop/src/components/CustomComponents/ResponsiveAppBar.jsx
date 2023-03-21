@@ -11,8 +11,9 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
+import { Button } from '@mui/material';
 
-// const pages = ['Products', 'Pricing', 'Blog'];
+const pages = ['airplane ticket', 'train ticket', 'hotel reservation'];
 const settings = ['Profile', 'reservations', 'Logout'];
 
 function ResponsiveAppBar() {
@@ -93,7 +94,7 @@ function ResponsiveAppBar() {
                                 display: { xs: 'block', md: 'none' },
                             }}
                         >
-                            {/* {pages.map((page) => (
+                            {pages.map((page) => (
                                 <MenuItem
                                     key={page}
                                     onClick={handleCloseNavMenu}
@@ -102,7 +103,7 @@ function ResponsiveAppBar() {
                                         {page}
                                     </Typography>
                                 </MenuItem>
-                            ))} */}
+                            ))}
                         </Menu>
                     </Box>
                     <AirplaneTicketIcon
@@ -124,7 +125,7 @@ function ResponsiveAppBar() {
                             textDecoration: 'none',
                         }}
                     >
-                        online ticket shop
+                        tickets
                     </Typography>
                     <Box
                         sx={{
@@ -132,7 +133,7 @@ function ResponsiveAppBar() {
                             display: { xs: 'none', md: 'flex' },
                         }}
                     >
-                        {/* {pages.map((page) => (
+                        {pages.map((page) => (
                             <Button
                                 key={page}
                                 onClick={handleCloseNavMenu}
@@ -140,7 +141,7 @@ function ResponsiveAppBar() {
                             >
                                 {page}
                             </Button>
-                        ))} */}
+                        ))}
                     </Box>
 
                     <Box sx={{ flexGrow: 0 }}>
