@@ -16,6 +16,7 @@ const customTypography = {
     secondaryTextColor: '#FFFFFF',
     lightGreen: '#00FF00',
     lightYellow: '#FFFF00',
+    smokeWhite: '#F5F5F5',
 };
 
 export default customTypography;

@@ -8,10 +8,13 @@ const styles = {
         justify-content: center;
         align-items: center;
         padding: ${customTypography.smallSpacing};
-        margin: 0 2rem;
+        margin: 2rem;
+        padding: 2rem;
+        background: ${customTypography.smokeWhite};
         cursor: pointer;
         @media (max-width: 768px) {
             margin: 0 1rem;
+            transform: scale(0.8);
         }
     `,
     buttonsContainer: css`

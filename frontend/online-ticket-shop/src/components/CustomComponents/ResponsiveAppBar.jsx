@@ -13,7 +13,11 @@ import MenuItem from '@mui/material/MenuItem';
 import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
 import { Button } from '@mui/material';
 
-const pages = ['airplane ticket', 'train ticket', 'hotel reservation'];
+const pages = [
+    { name: 'airplane ticket' },
+    { name: 'train ticket' },
+    { name: 'hotel reservation' },
+];
 const settings = ['Profile', 'reservations', 'Logout'];
 
 function ResponsiveAppBar() {
@@ -96,11 +100,11 @@ function ResponsiveAppBar() {
                         >
                             {pages.map((page) => (
                                 <MenuItem
-                                    key={page}
+                                    key={page.name}
                                     onClick={handleCloseNavMenu}
                                 >
                                     <Typography textAlign="center">
-                                        {page}
+                                        {page.name}
                                     </Typography>
                                 </MenuItem>
                             ))}
@@ -135,11 +139,11 @@ function ResponsiveAppBar() {
                     >
                         {pages.map((page) => (
                             <Button
-                                key={page}
+                                key={page.name}
                                 onClick={handleCloseNavMenu}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >
-                                {page}
+                                {page.name}
                             </Button>
                         ))}
                     </Box>
