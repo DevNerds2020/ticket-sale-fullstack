@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
-import { Box, Typography, TextField } from '@mui/material';
+import {
+    Box,
+    Typography,
+    TextField,
+    FormControlLabel,
+    Checkbox,
+} from '@mui/material';
 import styles from './DynamicListStyles';
 import TicketItemView from '../TicketItem/TicketItemView';
 import Container from '../CustomComponents/Container';
+import { Favorite, FavoriteBorder } from '@mui/icons-material';
 
 const sampleData = [
     {
@@ -186,6 +193,17 @@ const DynamicListView = () => {
                             handleFilterChange(e);
                         }}
                         name="numberOfPassengers"
+                    />
+                    {/* check box for sorting by cheapest */}
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                icon={<FavoriteBorder />}
+                                checkedIcon={<Favorite />}
+                                name="checkedH"
+                            />
+                        }
+                        label="sort by cheapest"
                     />
                 </Box>
                 <Box className={styles.container}>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextField, Typography } from '@mui/material';
+import { Button, TextField, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 
 import Container from '../CustomComponents/Container';
@@ -35,6 +35,9 @@ export const LoginView = (props) => {
                     }}
                     onChange={handleChange}
                 />
+                <Button variant="contained" type="submit">
+                    submit
+                </Button>
             </form>
         </Container>
     );
