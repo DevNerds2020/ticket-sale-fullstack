@@ -10,7 +10,9 @@ export const LoginView = (props) => {
     const { handleChange, handleSubmit } = props;
     return (
         <Container>
-            <Typography variant="h3">Log In</Typography>
+            <Typography variant="h3" mb={4} mt={4}>
+                Log In
+            </Typography>
 
             <form className={styles.form} onSubmit={handleSubmit}>
                 <TextField // email or phone number field here

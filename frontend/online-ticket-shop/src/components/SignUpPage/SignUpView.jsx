@@ -12,7 +12,9 @@ const SignUpView = (props) => {
     const { handleChange, handleSubmit, formData } = props;
     return (
         <Container>
-            <Typography variant="h3">Sign Up</Typography>
+            <Typography variant="h3" mb={4} mt={4}>
+                Sign Up
+            </Typography>
             <form className={styles.form} onSubmit={handleSubmit}>
                 <TextField
                     label="Email"

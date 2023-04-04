@@ -1,76 +1,146 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Typography, TextField } from '@mui/material';
-import ResponsiveAppBar from '../CustomComponents/ResponsiveAppBar';
 import styles from './DynamicListStyles';
 import TicketItemView from '../TicketItem/TicketItemView';
+import Container from '../CustomComponents/Container';
 
 const sampleData = [
     {
         id: 1,
         title: 'Ticket 1',
         price: 100,
+        destinationCity: 'New York',
+        departureCity: 'London',
+        departureDate: '2021-10-10',
+        returnDate: '2021-10-20',
+        numberOfPassengers: 2,
     },
     {
         id: 2,
         title: 'Ticket 2',
         price: 200,
+        destinationCity: 'New York',
+        departureCity: 'London',
+        departureDate: '2021-10-10',
+        returnDate: '2021-10-20',
+        numberOfPassengers: 2,
     },
     {
         id: 2,
         title: 'Ticket 2',
         price: 200,
+        destinationCity: 'mashhad',
+        departureCity: 'London',
+        departureDate: '2022-10-10',
+        returnDate: '2022-10-20',
+        numberOfPassengers: 2,
     },
     {
         id: 2,
         title: 'Ticket 2',
         price: 200,
+        destinationCity: 'New York',
+        departureCity: 'London',
+        departureDate: '2021-10-10',
+        returnDate: '2021-10-20',
+        numberOfPassengers: 10,
     },
     {
         id: 2,
         title: 'Ticket 2',
         price: 200,
+        destinationCity: 'tehran',
+        departureCity: 'ghazvin',
+        departureDate: '2021-10-10',
+        returnDate: '2020-12-10',
+        numberOfPassengers: 2,
     },
     {
         id: 2,
         title: 'Ticket 2',
         price: 200,
+        destinationCity: 'esfahan',
+        departureCity: 'tehran',
+        departureDate: '2021-10-10',
+        returnDate: '2021-10-20',
+        numberOfPassengers: 5,
     },
     {
         id: 2,
         title: 'Ticket 2',
         price: 200,
+        destinationCity: 'esfahan',
+        departureCity: 'tehran',
+        departureDate: '2021-10-10',
+        returnDate: '2021-10-20',
+        numberOfPassengers: 5,
     },
     {
         id: 2,
         title: 'Ticket 2',
         price: 200,
+        destinationCity: 'esfahan',
+        departureCity: 'tehran',
+        departureDate: '2021-10-10',
+        returnDate: '2021-10-20',
+        numberOfPassengers: 5,
     },
     {
         id: 2,
         title: 'Ticket 2',
         price: 200,
+        destinationCity: 'esfahan',
+        departureCity: 'tehran',
+        departureDate: '2021-10-10',
+        returnDate: '2021-10-20',
+        numberOfPassengers: 5,
     },
     {
         id: 2,
         title: 'Ticket 2',
         price: 200,
+        destinationCity: 'esfahan',
+        departureCity: 'tehran',
+        departureDate: '2021-10-10',
+        returnDate: '2021-10-20',
+        numberOfPassengers: 5,
     },
     {
         id: 2,
         title: 'Ticket 2',
         price: 200,
+        destinationCity: 'esfahan',
+        departureCity: 'tehran',
+        departureDate: '2021-10-10',
+        returnDate: '2021-10-20',
+        numberOfPassengers: 5,
     },
     {
         id: 2,
         title: 'Ticket 2',
         price: 200,
+        destinationCity: 'esfahan',
+        departureCity: 'tehran',
+        departureDate: '2021-10-10',
+        returnDate: '2021-10-20',
+        numberOfPassengers: 5,
     },
 ];
 
 const DynamicListView = () => {
+    const [data, setData] = useState(sampleData);
+
+    const handleFilterChange = (e) => {
+        const { name, value } = e.target;
+        const filteredData = sampleData.filter((item) => {
+            if (item[name].toString().includes(value)) {
+                return item;
+            }
+        });
+        setData(filteredData);
+    };
     return (
-        <Box>
-            <ResponsiveAppBar />
+        <Container>
             <Box className={styles.pageContainer}>
                 <Box className={styles.filterContainer}>
                     {/*filters have this fields:
@@ -80,13 +150,19 @@ const DynamicListView = () => {
                     - return date
                     - number of passengers 
                     */}
-                    <Typography variant="h6">filters</Typography>
+                    <Typography variant="h6" mb={5}>
+                        filters
+                    </Typography>
                     <TextField
                         InputProps={{
                             className: styles.filterInputs,
                         }}
                         label="destination city"
                         type="text"
+                        onChange={(e) => {
+                            handleFilterChange(e);
+                        }}
+                        name="destinationCity"
                     />
                     <TextField
                         InputProps={{
@@ -94,6 +170,10 @@ const DynamicListView = () => {
                         }}
                         label="departure city"
                         type="text"
+                        onChange={(e) => {
+                            handleFilterChange(e);
+                        }}
+                        name="departureCity"
                     />
 
                     <TextField
@@ -102,6 +182,10 @@ const DynamicListView = () => {
                         }}
                         label="number of passengers"
                         type="number"
+                        onChange={(e) => {
+                            handleFilterChange(e);
+                        }}
+                        name="numberOfPassengers"
                     />
                 </Box>
                 <Box className={styles.container}>
@@ -109,7 +193,7 @@ const DynamicListView = () => {
                         <Typography variant="h6">tickets</Typography>
                     </Box>
                     <Box className={styles.mainContainer}>
-                        {sampleData.map((item, index) => (
+                        {data.map((item, index) => (
                             <React.Fragment key={index}>
                                 <TicketItemView item={item} />
                             </React.Fragment>
@@ -117,7 +201,7 @@ const DynamicListView = () => {
                     </Box>
                 </Box>
             </Box>
-        </Box>
+        </Container>
     );
 };
 

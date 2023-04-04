@@ -1,6 +1,6 @@
 import React from 'react';
-import ResponsiveAppBar from '../CustomComponents/ResponsiveAppBar';
 import TicketItemsListView from '../TicketItemsList/TicketItemsListView';
+import ResponsiveAppBar from '../CustomComponents/ResponsiveAppBar';
 
 export const HomeView = () => {
     return (

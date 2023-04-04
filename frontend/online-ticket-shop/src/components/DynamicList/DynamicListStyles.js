@@ -36,6 +36,10 @@ const styles = {
         display: flex;
         flex-direction: row;
         justify-content: center;
+        @media (max-width: 768px) {
+            flex-direction: column;
+            align-items: center;
+        }
     `,
 
     filterContainer: css`
@@ -49,7 +53,7 @@ const styles = {
         border: 1px solid ${customTypography.primaryColor};
         border-radius: 0.5rem;
         width: 60%;
-        min-width: 80px;
+        min-width: 100px;
         height: 70vh;
         position: relative;
     `,

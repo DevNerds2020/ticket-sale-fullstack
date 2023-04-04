@@ -21,7 +21,7 @@ function App() {
                 pauseOnHover
                 theme="light"
             />
-            <RouterProvider router={router} />{' '}
+            <RouterProvider router={router} />
         </>
     );
 }
