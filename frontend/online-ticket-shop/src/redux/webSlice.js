@@ -4,16 +4,18 @@ export const webSlice = createSlice({
     name: 'web',
     initialState: {
         language: 'en',
-        theme: 'light',
+        theme: '#1976d2',
     },
     reducers: {
         setLanguage: (state, action) => {
-            console.log('action.payload', action.payload);
             state.language = action.payload;
+        },
+        setTheme: (state, action) => {
+            state.theme = action.payload;
         },
     },
 });
 
-export const { setLanguage } = webSlice.actions;
+export const { setLanguage, setTheme } = webSlice.actions;
 
 export default webSlice.reducer;

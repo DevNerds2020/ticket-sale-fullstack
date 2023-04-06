@@ -41,6 +41,7 @@ export const translations = {
         ticketReturnDate: 'Ticket Return Date',
         emailOrPhoneNumber: 'Email or Phone Number',
         signUp: 'sign up',
+        buy: 'buy',
     },
     fa: {
         airplaneTickets: 'بلیط هواپیما',
@@ -84,5 +85,6 @@ export const translations = {
         ticketReturnDate: 'تاریخ برگشت بلیط',
         emailOrPhoneNumber: 'ایمیل یا شماره تلفن',
         signUp: 'ثبت نام',
+        buy: 'خرید',
     },
 };

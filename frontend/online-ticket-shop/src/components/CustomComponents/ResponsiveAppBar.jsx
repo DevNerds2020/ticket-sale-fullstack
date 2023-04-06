@@ -13,7 +13,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
 import { Button, Select } from '@mui/material';
-import { setLanguage } from '../../redux/webSlice';
+import { setLanguage, setTheme } from '../../redux/webSlice';
 import { useNavigate } from 'react-router-dom';
 
 const pages = [
@@ -21,14 +21,21 @@ const pages = [
     { en: 'train ticket', fa: 'بلیط قطار', to: '/traintickets' },
     { en: 'hotel reservation', fa: 'رزرو هتل', to: '/hotelreservations' },
 ];
-const settings = ['Profile', 'reservations', 'Logout'];
+const settings = [
+    { name: 'Profile', to: '/accountinfo' },
+    { name: 'reservations', to: '/reservations' },
+    { name: 'Logout', to: '/login' },
+];
 const languageOptions = [
     { value: 'en', label: 'English' },
     { value: 'fa', label: 'فارسی' },
 ];
 
+const themes = ['#32a852', '#b8b451', '#b964cc', '#1976d2'];
+
 function ResponsiveAppBar() {
-    const { language } = useSelector((state) => state.webReducer) || 'en';
+    const { language, theme } = useSelector((state) => state.webReducer);
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -42,12 +49,12 @@ function ResponsiveAppBar() {
     };
 
     const handleCloseNavMenu = (link) => {
-        console.log('%c Line:45 🌰 link', 'color:#3f7cff', link);
         link && navigate(link);
         setAnchorElNav(null);
     };
 
-    const handleCloseUserMenu = () => {
+    const handleCloseUserMenu = (link) => {
+        link && navigate(link);
         setAnchorElUser(null);
     };
 
@@ -55,8 +62,12 @@ function ResponsiveAppBar() {
         dispatch(setLanguage(event.target.value));
     };
 
+    const changeTheme = (event) => {
+        dispatch(setTheme(event.target.value));
+    };
+
     return (
-        <AppBar position="fixed">
+        <AppBar position="fixed" sx={{ background: `${theme}` }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <AirplaneTicketIcon
@@ -164,12 +175,33 @@ function ResponsiveAppBar() {
 
                     <Box sx={{ flexGrow: 0 }}>
                         <Select
+                            value={theme}
+                            onChange={changeTheme}
+                            variant="standard"
+                            size="small"
+                            sx={{
+                                mr: 1,
+                                background: `${theme}`,
+                            }}
+                        >
+                            {themes.map((option, index) => (
+                                <MenuItem
+                                    value={option}
+                                    key={index}
+                                    sx={{
+                                        background: `${option}`,
+                                        mt: 0.5,
+                                    }}
+                                ></MenuItem>
+                            ))}
+                        </Select>
+                        <Select
                             value={language}
                             onChange={handleChange}
                             variant="standard"
+                            size="small"
                             sx={{
-                                marginRight: '40px',
-                                color: 'white',
+                                mr: 1,
                             }}
                         >
                             {languageOptions.map((option) => (
@@ -181,6 +213,7 @@ function ResponsiveAppBar() {
                                 </MenuItem>
                             ))}
                         </Select>
+
                         <Tooltip title="Open settings">
                             <IconButton
                                 onClick={handleOpenUserMenu}
@@ -210,11 +243,13 @@ function ResponsiveAppBar() {
                         >
                             {settings.map((setting) => (
                                 <MenuItem
-                                    key={setting}
-                                    onClick={handleCloseUserMenu}
+                                    key={setting.name}
+                                    onClick={() =>
+                                        handleCloseUserMenu(setting.to)
+                                    }
                                 >
                                     <Typography textAlign="center">
-                                        {setting}
+                                        {setting.name}
                                     </Typography>
                                 </MenuItem>
                             ))}

@@ -5,10 +5,12 @@ import PropTypes from 'prop-types';
 import Container from '../CustomComponents/Container';
 import styles from '../../globalStyles';
 import { translations } from '../../utils/translations';
+import { Link } from 'react-router-dom';
+import customTypography from '../../cssdesigns';
 
 // phone number or email and password
 export const LoginView = (props) => {
-    const { handleChange, handleSubmit, language } = props;
+    const { handleChange, handleSubmit, language, theme } = props;
     return (
         <Container>
             <Typography variant="h3" mb={4} mt={4}>
@@ -36,7 +38,15 @@ export const LoginView = (props) => {
                     }}
                     onChange={handleChange}
                 />
-                <Button variant="contained" type="submit">
+                <Link to="/signup">{translations[language].signUp}</Link>
+                <Button
+                    sx={{
+                        marginTop: `${customTypography.smallSpacing}px`,
+                        background: `${theme}`,
+                    }}
+                    variant="contained"
+                    type="submit"
+                >
                     {translations[language].submit}
                 </Button>
             </form>
@@ -49,4 +59,5 @@ LoginView.propTypes = {
     handleSubmit: PropTypes.func.isRequired,
     formData: PropTypes.object.isRequired,
     language: PropTypes.string.isRequired,
+    theme: PropTypes.string.isRequired,
 };

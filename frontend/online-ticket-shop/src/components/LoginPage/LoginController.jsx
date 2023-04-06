@@ -8,7 +8,8 @@ const LoginController = () => {
         password: '',
     });
     //if language is undefined, set it to english
-    const { language } = useSelector((state) => state.webReducer) || 'en';
+    const { language, theme } =
+        useSelector((state) => state.webReducer) || 'en';
 
     /**
      * @function handleChange
@@ -41,6 +42,7 @@ const LoginController = () => {
         <LoginView
             formData={formData}
             language={language}
+            theme={theme}
             handleChange={handleChange}
             handleSubmit={handleSubmit}
         />

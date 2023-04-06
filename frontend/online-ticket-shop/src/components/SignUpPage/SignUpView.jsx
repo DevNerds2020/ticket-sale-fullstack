@@ -7,10 +7,12 @@ import Container from '../CustomComponents/Container';
 import styles from '../../globalStyles';
 import { css } from '@emotion/css';
 import { translations } from '../../utils/translations';
+import { Link } from 'react-router-dom';
+import customTypography from '../../cssdesigns';
 
 // getting email and password and re enter password and phone number
 const SignUpView = (props) => {
-    const { handleChange, handleSubmit, formData, language } = props;
+    const { handleChange, handleSubmit, formData, language, theme } = props;
     return (
         <Container>
             <Typography variant="h3" mb={4} mt={4}>
@@ -69,7 +71,20 @@ const SignUpView = (props) => {
                     }}
                     onChange={handleChange}
                 />
-                <Button variant="contained" type="submit">
+                <Link
+                    to="/login"
+                    className={css`
+                        margin-bottom: ${customTypography.smallSpacing}px;
+                    `}
+                >
+                    {translations[language].login}
+                </Link>
+
+                <Button
+                    sx={{ background: `${theme}` }}
+                    variant="contained"
+                    type="submit"
+                >
                     {translations[language].submit}
                 </Button>
             </form>
@@ -84,4 +99,5 @@ SignUpView.propTypes = {
     handleSubmit: PropTypes.func.isRequired,
     formData: PropTypes.object.isRequired,
     language: PropTypes.string.isRequired,
+    theme: PropTypes.string.isRequired,
 };

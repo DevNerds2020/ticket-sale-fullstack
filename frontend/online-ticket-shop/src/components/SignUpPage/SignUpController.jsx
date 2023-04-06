@@ -12,7 +12,8 @@ const SignUpController = () => {
         'phone-number': '',
     });
 
-    const { language } = useSelector((state) => state.webReducer) || 'en';
+    const { language, theme } =
+        useSelector((state) => state.webReducer) || 'en';
 
     /**
      * @function handleChange
@@ -41,6 +42,7 @@ const SignUpController = () => {
         <SignUpView
             formData={formData}
             language={language}
+            theme={theme}
             handleChange={handleChange}
             handleSubmit={handleSubmit}
         />
