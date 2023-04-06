@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -11,16 +12,25 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
-import { Button } from '@mui/material';
+import { Button, Select } from '@mui/material';
+import { setLanguage } from '../../redux/webSlice';
+import { useNavigate } from 'react-router-dom';
 
 const pages = [
-    { name: 'airplane ticket' },
-    { name: 'train ticket' },
-    { name: 'hotel reservation' },
+    { en: 'airplane ticket', fa: ' بلیط هواپیما', to: '/airplanetickets' },
+    { en: 'train ticket', fa: 'بلیط قطار', to: '/traintickets' },
+    { en: 'hotel reservation', fa: 'رزرو هتل', to: '/hotelreservations' },
 ];
 const settings = ['Profile', 'reservations', 'Logout'];
+const languageOptions = [
+    { value: 'en', label: 'English' },
+    { value: 'fa', label: 'فارسی' },
+];
 
 function ResponsiveAppBar() {
+    const { language } = useSelector((state) => state.webReducer) || 'en';
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -31,12 +41,18 @@ function ResponsiveAppBar() {
         setAnchorElUser(event.currentTarget);
     };
 
-    const handleCloseNavMenu = () => {
+    const handleCloseNavMenu = (link) => {
+        console.log('%c Line:45 🌰 link', 'color:#3f7cff', link);
+        link && navigate(link);
         setAnchorElNav(null);
     };
 
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
+    };
+
+    const handleChange = (event) => {
+        dispatch(setLanguage(event.target.value));
     };
 
     return (
@@ -100,12 +116,10 @@ function ResponsiveAppBar() {
                         >
                             {pages.map((page) => (
                                 <MenuItem
-                                    key={page.name}
-                                    onClick={handleCloseNavMenu}
+                                    key={page[language]}
+                                    onClick={() => handleCloseNavMenu(page.to)}
                                 >
-                                    <Typography textAlign="center">
-                                        {page.name}
-                                    </Typography>
+                                    {page[language]}
                                 </MenuItem>
                             ))}
                         </Menu>
@@ -139,16 +153,34 @@ function ResponsiveAppBar() {
                     >
                         {pages.map((page) => (
                             <Button
-                                key={page.name}
-                                onClick={handleCloseNavMenu}
+                                key={page[language]}
+                                onClick={() => handleCloseNavMenu(page.to)}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >
-                                {page.name}
+                                {page[language]}
                             </Button>
                         ))}
                     </Box>
 
                     <Box sx={{ flexGrow: 0 }}>
+                        <Select
+                            value={language}
+                            onChange={handleChange}
+                            variant="standard"
+                            sx={{
+                                marginRight: '40px',
+                                color: 'white',
+                            }}
+                        >
+                            {languageOptions.map((option) => (
+                                <MenuItem
+                                    key={option.value}
+                                    value={option.value}
+                                >
+                                    {option.label}
+                                </MenuItem>
+                            ))}
+                        </Select>
                         <Tooltip title="Open settings">
                             <IconButton
                                 onClick={handleOpenUserMenu}

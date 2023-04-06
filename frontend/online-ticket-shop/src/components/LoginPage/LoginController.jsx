@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { LoginView } from './LoginView';
 
 const LoginController = () => {
@@ -6,6 +7,8 @@ const LoginController = () => {
         username: '',
         password: '',
     });
+    //if language is undefined, set it to english
+    const { language } = useSelector((state) => state.webReducer) || 'en';
 
     /**
      * @function handleChange
@@ -37,6 +40,7 @@ const LoginController = () => {
     return (
         <LoginView
             formData={formData}
+            language={language}
             handleChange={handleChange}
             handleSubmit={handleSubmit}
         />

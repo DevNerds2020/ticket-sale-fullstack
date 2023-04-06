@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import SignUpView from './SignUpView';
@@ -10,6 +11,8 @@ const SignUpController = () => {
         're-enter-password': '',
         'phone-number': '',
     });
+
+    const { language } = useSelector((state) => state.webReducer) || 'en';
 
     /**
      * @function handleChange
@@ -37,6 +40,7 @@ const SignUpController = () => {
     return (
         <SignUpView
             formData={formData}
+            language={language}
             handleChange={handleChange}
             handleSubmit={handleSubmit}
         />

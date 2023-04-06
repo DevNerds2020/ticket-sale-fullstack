@@ -6,18 +6,19 @@ import PasswordStrengthBar from 'react-password-strength-bar';
 import Container from '../CustomComponents/Container';
 import styles from '../../globalStyles';
 import { css } from '@emotion/css';
+import { translations } from '../../utils/translations';
 
 // getting email and password and re enter password and phone number
 const SignUpView = (props) => {
-    const { handleChange, handleSubmit, formData } = props;
+    const { handleChange, handleSubmit, formData, language } = props;
     return (
         <Container>
             <Typography variant="h3" mb={4} mt={4}>
-                Sign Up
+                {translations[language].signUp}
             </Typography>
             <form className={styles.form} onSubmit={handleSubmit}>
                 <TextField
-                    label="Email"
+                    label={translations[language].email}
                     type="email"
                     name="email"
                     required
@@ -28,7 +29,7 @@ const SignUpView = (props) => {
                     onChange={handleChange}
                 />
                 <TextField
-                    label="Password"
+                    label={translations[language].password}
                     type="password"
                     name="password"
                     required
@@ -48,7 +49,7 @@ const SignUpView = (props) => {
                     />
                 )}
                 <TextField
-                    label="Re-enter Password"
+                    label={translations[language].email}
                     type="password"
                     name="re-enter-password"
                     required
@@ -59,7 +60,7 @@ const SignUpView = (props) => {
                     onChange={handleChange}
                 />
                 <TextField
-                    label="Phone Number"
+                    label={translations[language].phoneNumber}
                     name="phone-number"
                     type="tel"
                     required
@@ -69,7 +70,7 @@ const SignUpView = (props) => {
                     onChange={handleChange}
                 />
                 <Button variant="contained" type="submit">
-                    submit
+                    {translations[language].submit}
                 </Button>
             </form>
         </Container>
@@ -82,4 +83,5 @@ SignUpView.propTypes = {
     handleChange: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
     formData: PropTypes.object.isRequired,
+    language: PropTypes.string.isRequired,
 };

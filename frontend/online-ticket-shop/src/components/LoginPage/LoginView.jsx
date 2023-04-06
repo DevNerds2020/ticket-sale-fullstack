@@ -4,19 +4,20 @@ import PropTypes from 'prop-types';
 
 import Container from '../CustomComponents/Container';
 import styles from '../../globalStyles';
+import { translations } from '../../utils/translations';
 
 // phone number or email and password
 export const LoginView = (props) => {
-    const { handleChange, handleSubmit } = props;
+    const { handleChange, handleSubmit, language } = props;
     return (
         <Container>
             <Typography variant="h3" mb={4} mt={4}>
-                Log In
+                {translations[language].login}
             </Typography>
 
             <form className={styles.form} onSubmit={handleSubmit}>
                 <TextField // email or phone number field here
-                    label="Email or Phone Number"
+                    label={translations[language].emailOrPhoneNumber}
                     type="username"
                     name="username"
                     required
@@ -26,7 +27,7 @@ export const LoginView = (props) => {
                     onChange={handleChange}
                 />
                 <TextField // password field here
-                    label="Password"
+                    label={translations[language].password}
                     type="password"
                     name="password"
                     required
@@ -36,7 +37,7 @@ export const LoginView = (props) => {
                     onChange={handleChange}
                 />
                 <Button variant="contained" type="submit">
-                    submit
+                    {translations[language].submit}
                 </Button>
             </form>
         </Container>
@@ -47,4 +48,5 @@ LoginView.propTypes = {
     handleChange: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
     formData: PropTypes.object.isRequired,
+    language: PropTypes.string.isRequired,
 };
