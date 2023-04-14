@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Box, Typography } from '@mui/material';
 
 import styles from './TicketItemsListStyles';
-import TicketItemView from '../TicketItem/TicketItemView';
+import TicketItemController from '../TicketItem/TicketItemController';
 
 const sampleData = [
     {
@@ -72,15 +72,25 @@ const TicketItemsListView = (props) => {
     const { items, title } = props;
     console.log('%c Line:10 🍯 items', 'color:#6ec1c2', items);
 
+    //using tailwindcss
     return (
-        <Box className={styles.container}>
-            <Box className={styles.header}>
-                <Typography variant="h6">{title}</Typography>
+        <Box className={styles.tailwind.container}>
+            <Box className={styles.tailwind.header}>
+                <Typography className="font-bold" variant="h6">
+                    {title}
+                </Typography>
             </Box>
-            <Box className={styles.mainContainer}>
+            <Box
+                className={styles.tailwind.mainContainer}
+                sx={{
+                    '&::-webkit-scrollbar': {
+                        display: 'none',
+                    },
+                }}
+            >
                 {sampleData.map((item, index) => (
                     <React.Fragment key={index}>
-                        <TicketItemView item={item} />
+                        <TicketItemController item={item} />
                     </React.Fragment>
                 ))}
             </Box>

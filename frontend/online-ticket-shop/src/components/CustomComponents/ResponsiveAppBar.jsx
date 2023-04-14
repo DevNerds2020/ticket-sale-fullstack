@@ -12,9 +12,13 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
-import { Button, Select } from '@mui/material';
-import { setLanguage, setTheme } from '../../redux/webSlice';
+import { Badge, Button, Select } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+
+import { setLanguage, setTheme } from '../../redux/webSlice';
+
+//TODO: menu has a problem
 
 const pages = [
     { en: 'airplane ticket', fa: ' بلیط هواپیما', to: '/airplanetickets' },
@@ -35,6 +39,7 @@ const themes = ['#32a852', '#b8b451', '#b964cc', '#1976d2'];
 
 function ResponsiveAppBar() {
     const { language, theme } = useSelector((state) => state.webReducer);
+    const { user } = useSelector((state) => state.userReducer);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -174,6 +179,16 @@ function ResponsiveAppBar() {
                     </Box>
 
                     <Box sx={{ flexGrow: 0 }}>
+                        {user.itemsBag?.length > 0 && (
+                            <IconButton>
+                                <Badge
+                                    badgeContent={user?.itemsBag?.length}
+                                    color="secondary"
+                                >
+                                    <ShoppingCartIcon />
+                                </Badge>
+                            </IconButton>
+                        )}
                         <Select
                             value={theme}
                             onChange={changeTheme}
@@ -217,11 +232,12 @@ function ResponsiveAppBar() {
                         <Tooltip title="Open settings">
                             <IconButton
                                 onClick={handleOpenUserMenu}
+                                onBlur={handleCloseUserMenu}
                                 sx={{ p: 0 }}
                             >
                                 <Avatar
                                     alt="Remy Sharp"
-                                    src="/static/images/avatar/2.jpg"
+                                    src={user?.avatar ?? ''}
                                 />
                             </IconButton>
                         </Tooltip>

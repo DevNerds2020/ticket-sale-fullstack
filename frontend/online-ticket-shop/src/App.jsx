@@ -1,12 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { RouterProvider } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import { useDispatch } from 'react-redux';
 
 import './App.css';
 import router from './customRoutes';
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { addUser } from './redux/userSlice';
 
 function App() {
+    //add test user to redux store
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(
+            addUser({ name: 'test', email: 'test@gmail.com', itemsBag: [] })
+        );
+    }, []);
     return (
         <>
             <ToastContainer

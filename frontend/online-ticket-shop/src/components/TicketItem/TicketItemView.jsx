@@ -1,5 +1,4 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { Box, Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import InfoIcon from '@mui/icons-material/Info';
@@ -8,9 +7,7 @@ import styles from './TicketItemStyles';
 import { translations } from '../../utils/translations';
 
 const TicketItemView = (props) => {
-    const { item } = props;
-
-    const { language, theme } = useSelector((state) => state.webReducer);
+    const { item, language, theme, setInfoDialogOpen } = props;
 
     return (
         <Box className={styles.mainContainer}>
@@ -35,6 +32,7 @@ const TicketItemView = (props) => {
                     sx={{ color: `${theme}` }}
                     variant="outlined"
                     startIcon={<InfoIcon />}
+                    onClick={setInfoDialogOpen}
                 />
             </Box>
         </Box>
@@ -44,4 +42,7 @@ const TicketItemView = (props) => {
 export default TicketItemView;
 TicketItemView.propTypes = {
     item: PropTypes.object.isRequired,
+    language: PropTypes.string.isRequired,
+    theme: PropTypes.string.isRequired,
+    setInfoDialogOpen: PropTypes.func.isRequired,
 };

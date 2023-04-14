@@ -42,6 +42,11 @@ export const translations = {
         emailOrPhoneNumber: 'Email or Phone Number',
         signUp: 'sign up',
         buy: 'buy',
+        sortByCheapest: 'Sort By Cheapest',
+        clearFilters: 'Clear Filters',
+        filters: 'Filters',
+        userInformations: "User Information's",
+        ticketInformation: 'Ticket Information',
     },
     fa: {
         airplaneTickets: 'بلیط هواپیما',
@@ -86,5 +91,10 @@ export const translations = {
         emailOrPhoneNumber: 'ایمیل یا شماره تلفن',
         signUp: 'ثبت نام',
         buy: 'خرید',
+        sortByCheapest: 'مرتب سازی بر اساس ارزان ترین',
+        clearFilters: 'پاک کردن فیلترها',
+        filters: 'فیلترها',
+        userInformations: 'اطلاعات کاربر',
+        ticketInformation: 'اطلاعات بلیط',
     },
 };

@@ -53,9 +53,12 @@ const styles = {
         border: 1px solid ${customTypography.primaryColor};
         border-radius: 0.5rem;
         width: 60%;
-        min-width: 100px;
-        height: 70vh;
+        height: 110vh;
         position: relative;
+        @media (max-width: 768px) {
+            width: 100%;
+            height: 100%;
+        }
     `,
 };
 

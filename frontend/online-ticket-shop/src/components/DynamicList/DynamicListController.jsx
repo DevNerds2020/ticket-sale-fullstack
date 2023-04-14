@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
-import DynamicListView from './DynamicListView';
+import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 
+import DynamicListView from './DynamicListView';
+import { useEffect } from 'react';
+
+//TODO buttons not working good
 const sampleData = [
     {
         id: 1,
@@ -104,8 +109,8 @@ const sampleData = [
     },
     {
         id: 2,
-        title: 'Ticket 2',
-        price: 200,
+        title: 'Ticket test cheap',
+        price: 50,
         destinationCity: 'esfahan',
         departureCity: 'tehran',
         departureDate: '2021-10-10',
@@ -115,7 +120,7 @@ const sampleData = [
     {
         id: 2,
         title: 'Ticket 2',
-        price: 200,
+        price: 100,
         destinationCity: 'esfahan',
         departureCity: 'tehran',
         departureDate: '2021-10-10',
@@ -126,6 +131,33 @@ const sampleData = [
 
 const DynamicListController = () => {
     const [data, setData] = useState(sampleData);
+    const [isSorted, setIsSorted] = useState(false);
+    const { language } = useSelector((state) => state.webReducer);
+    const [pageMeta, setPageMeta] = useState({
+        currentPage: 1,
+        pagename: 'hotelReservation',
+    });
+
+    const location = useLocation();
+
+    useEffect(() => {
+        if (location.pathname === '/hotelreservations') {
+            setPageMeta({
+                currentPage: 1,
+                pagename: 'hotelReservation',
+            });
+        } else if (location.pathname === '/airplanetickets') {
+            setPageMeta({
+                currentPage: 1,
+                pagename: 'airplaneTickets',
+            });
+        } else if (location.pathname === '/traintickets') {
+            setPageMeta({
+                currentPage: 1,
+                pagename: 'trainTickets',
+            });
+        }
+    }, [location.pathname]);
 
     /**
      * @function handleFilterChange
@@ -135,7 +167,8 @@ const DynamicListController = () => {
      */
     const handleFilterChange = (e) => {
         const { name, value } = e.target;
-        const filteredData = sampleData.filter((item) => {
+        const dataToFilter = data.length === 0 ? sampleData : data;
+        const filteredData = dataToFilter.filter((item) => {
             if (item[name].toString().includes(value)) {
                 return item;
             }
@@ -143,8 +176,31 @@ const DynamicListController = () => {
         setData(filteredData);
     };
 
+    /**
+     * @function handleSortByCheapest
+     * @returns void
+     * @description sort data based on price
+     */
+    const handleSortByCheapest = () => {
+        if (isSorted) {
+            setData([...sampleData]);
+            setIsSorted(false);
+        } else {
+            const sortedData = sampleData.sort((a, b) => a.price - b.price);
+            setData(sortedData);
+            setIsSorted(true);
+        }
+    };
+
     return (
-        <DynamicListView data={data} handleFilterChange={handleFilterChange} />
+        <DynamicListView
+            language={language}
+            data={data}
+            pageMeta={pageMeta}
+            handleFilterChange={handleFilterChange}
+            clearFilters={() => setData(sampleData)}
+            handleSortByCheapest={handleSortByCheapest}
+        />
     );
 };
 

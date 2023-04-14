@@ -6,14 +6,24 @@ import {
     FormControlLabel,
     Checkbox,
 } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import styles from './DynamicListStyles';
-import TicketItemView from '../TicketItem/TicketItemView';
-import Container from '../CustomComponents/Container';
 import { Favorite, FavoriteBorder } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 
+import Container from '../CustomComponents/Container';
+import TicketItemController from '../TicketItem/TicketItemController';
+import { translations } from '../../utils/translations';
+
 const DynamicListView = (props) => {
-    const { data, handleFilterChange } = props;
+    const {
+        data,
+        handleFilterChange,
+        language,
+        clearFilters,
+        handleSortByCheapest,
+        pageMeta,
+    } = props;
     return (
         <Container>
             <Box className={styles.pageContainer}>
@@ -26,13 +36,13 @@ const DynamicListView = (props) => {
                     - number of passengers 
                     */}
                     <Typography variant="h6" mb={5}>
-                        filters
+                        {translations[language].filters}
                     </Typography>
                     <TextField
                         InputProps={{
                             className: styles.filterInputs,
                         }}
-                        label="destination city"
+                        label={translations[language].destinationCity}
                         type="text"
                         onChange={(e) => {
                             handleFilterChange(e);
@@ -43,7 +53,7 @@ const DynamicListView = (props) => {
                         InputProps={{
                             className: styles.filterInputs,
                         }}
-                        label="departure city"
+                        label={translations[language].departureCity}
                         type="text"
                         onChange={(e) => {
                             handleFilterChange(e);
@@ -55,14 +65,37 @@ const DynamicListView = (props) => {
                         InputProps={{
                             className: styles.filterInputs,
                         }}
-                        label="number of passengers"
+                        label={translations[language].numberOfPassengers}
                         type="number"
                         onChange={(e) => {
                             handleFilterChange(e);
                         }}
                         name="numberOfPassengers"
                     />
-                    {/* check box for sorting by cheapest */}
+                    <TextField
+                        InputProps={{
+                            className: styles.filterInputs,
+                        }}
+                        label={translations[language].departureDate}
+                        type="date"
+                        onChange={(e) => {
+                            handleFilterChange(e);
+                        }}
+                        name="departureDate"
+                        focused
+                    />
+                    <TextField
+                        InputProps={{
+                            className: styles.filterInputs,
+                        }}
+                        label={translations[language].returnDate}
+                        type="date"
+                        onChange={(e) => {
+                            handleFilterChange(e);
+                        }}
+                        name="returnDate"
+                        focused
+                    />
                     <FormControlLabel
                         control={
                             <Checkbox
@@ -71,17 +104,32 @@ const DynamicListView = (props) => {
                                 name="checkedH"
                             />
                         }
-                        label="sort by cheapest"
+                        label={translations[language].sortByCheapest}
+                        onClick={handleSortByCheapest}
+                    />
+
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                icon={<CloseIcon />}
+                                checkedIcon={<CloseIcon />}
+                                name="checkedH"
+                            />
+                        }
+                        label={translations[language].clearFilters}
+                        onClick={clearFilters}
                     />
                 </Box>
                 <Box className={styles.container}>
                     <Box className={styles.header}>
-                        <Typography variant="h6">tickets</Typography>
+                        <Typography variant="h6">
+                            {translations[language][pageMeta.pagename]}
+                        </Typography>
                     </Box>
                     <Box className={styles.mainContainer}>
                         {data.map((item, index) => (
                             <React.Fragment key={index}>
-                                <TicketItemView item={item} />
+                                <TicketItemController item={item} />
                             </React.Fragment>
                         ))}
                     </Box>
@@ -96,4 +144,8 @@ export default DynamicListView;
 DynamicListView.propTypes = {
     data: PropTypes.array.isRequired,
     handleFilterChange: PropTypes.func.isRequired,
+    language: PropTypes.string.isRequired,
+    clearFilters: PropTypes.func.isRequired,
+    handleSortByCheapest: PropTypes.func.isRequired,
+    pageMeta: PropTypes.object.isRequired,
 };
