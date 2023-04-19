@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, TextField, Typography } from '@mui/material';
+import { Box, MenuItem, Select, TextField, Typography } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Container from '../CustomComponents/Container';
@@ -8,7 +8,6 @@ import ResponsiveAppBar from '../CustomComponents/ResponsiveAppBar';
 import { translations } from '../../utils/translations';
 import { editUser } from '../../redux/userSlice';
 
-//TODO: => gender haves a bug
 const UserDetails = () => {
     const { user } = useSelector((state) => state.userReducer);
     const { language } = useSelector((state) => state.webReducer);
@@ -22,7 +21,7 @@ const UserDetails = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        dispatch(editUser({ ...userForm, [name]: value }));
+        if (name) dispatch(editUser({ ...userForm, [name]: value }));
     };
 
     return (
@@ -34,7 +33,7 @@ const UserDetails = () => {
                 </Typography>
 
                 <TextField
-                    label="Name"
+                    label={translations[language].name}
                     fullWidth
                     onChange={handleChange}
                     mb={2}
@@ -42,9 +41,10 @@ const UserDetails = () => {
                     InputProps={{ className: styles.input }}
                     type="text"
                     name="name"
+                    dir={language === 'en' ? 'ltr' : 'rtl'}
                 />
                 <TextField
-                    label="Email"
+                    label={translations[language].email}
                     fullWidth
                     onChange={handleChange}
                     value={userForm?.email ?? ''}
@@ -52,9 +52,10 @@ const UserDetails = () => {
                     InputProps={{ className: styles.input }}
                     type="email"
                     name="email"
+                    dir={language === 'en' ? 'ltr' : 'rtl'}
                 />
                 <TextField
-                    label="Phone"
+                    label={translations[language].phone}
                     fullWidth
                     onChange={handleChange}
                     value={userForm?.phone ?? ''}
@@ -62,9 +63,10 @@ const UserDetails = () => {
                     InputProps={{ className: styles.input }}
                     type="tel"
                     name="phone"
+                    dir={language === 'en' ? 'ltr' : 'rtl'}
                 />
                 <TextField
-                    label="Address"
+                    label={translations[language].address}
                     fullWidth
                     onChange={handleChange}
                     value={userForm?.address ?? ''}
@@ -72,9 +74,10 @@ const UserDetails = () => {
                     InputProps={{ className: styles.input }}
                     type="text"
                     name="address"
+                    dir={language === 'en' ? 'ltr' : 'rtl'}
                 />
                 <TextField
-                    label="City"
+                    label={translations[language].city}
                     fullWidth
                     onChange={handleChange}
                     value={userForm?.city ?? ''}
@@ -82,9 +85,10 @@ const UserDetails = () => {
                     InputProps={{ className: styles.input }}
                     type="text"
                     name="city"
+                    dir={language === 'en' ? 'ltr' : 'rtl'}
                 />
                 <TextField
-                    label="State"
+                    label={translations[language].state}
                     fullWidth
                     onChange={handleChange}
                     value={userForm?.state ?? ''}
@@ -92,9 +96,10 @@ const UserDetails = () => {
                     InputProps={{ className: styles.input }}
                     type="text"
                     name="state"
+                    dir={language === 'en' ? 'ltr' : 'rtl'}
                 />
                 <TextField
-                    label="Zip"
+                    label={translations[language].zip}
                     fullWidth
                     onChange={handleChange}
                     value={userForm?.zip ?? ''}
@@ -102,9 +107,10 @@ const UserDetails = () => {
                     InputProps={{ className: styles.input }}
                     type="number"
                     name="zip"
+                    dir={language === 'en' ? 'ltr' : 'rtl'}
                 />
                 <TextField
-                    label="Country"
+                    label={translations[language].country}
                     fullWidth
                     onChange={handleChange}
                     value={userForm?.country ?? ''}
@@ -112,9 +118,10 @@ const UserDetails = () => {
                     InputProps={{ className: styles.input }}
                     type="text"
                     name="country"
+                    dir={language === 'en' ? 'ltr' : 'rtl'}
                 />
                 <TextField
-                    label="National ID"
+                    label={translations[language].nationalId}
                     fullWidth
                     onChange={handleChange}
                     value={userForm?.nationalId ?? ''}
@@ -122,9 +129,10 @@ const UserDetails = () => {
                     InputProps={{ className: styles.input }}
                     type="text"
                     name="nationalId"
+                    dir={language === 'en' ? 'ltr' : 'rtl'}
                 />
                 <TextField
-                    label="Passport ID"
+                    label={translations[language].passportId}
                     onChange={handleChange}
                     fullWidth
                     value={userForm?.passportId ?? ''}
@@ -132,6 +140,7 @@ const UserDetails = () => {
                     InputProps={{ className: styles.input }}
                     type="number"
                     name="passportId"
+                    dir={language === 'en' ? 'ltr' : 'rtl'}
                 />
 
                 <Box
@@ -141,26 +150,38 @@ const UserDetails = () => {
                         alignItems: 'center',
                         mb: 2,
                     }}
+                    dir={language === 'en' ? 'ltr' : 'rtl'}
                 >
-                    <Typography sx={{ minWidth: 100 }}>Gender</Typography>
-                    <TextField
+                    <Typography sx={{ minWidth: 100 }}>
+                        {translations[language].gender}
+                    </Typography>
+                    <Select
+                        name="gender"
+                        value={userForm?.gender ?? ''}
+                        label={translations[language].gender}
                         onChange={handleChange}
-                        select
-                        variant="outlined"
-                        fullWidth
+                        dir={language === 'en' ? 'ltr' : 'rtl'}
                     >
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="other">Other</option>
-                    </TextField>
+                        <MenuItem value="male">
+                            {translations[language].male}
+                        </MenuItem>
+                        <MenuItem value="female">
+                            {translations[language].female}
+                        </MenuItem>
+                        <MenuItem value="other">
+                            {translations[language].other}
+                        </MenuItem>
+                    </Select>
                 </Box>
 
                 <TextField
-                    label="Birthdate"
+                    label={translations[language].birthdate}
                     type="date"
+                    name="birthdate"
                     InputLabelProps={{ shrink: true }}
                     fullWidth
                     mb={2}
+                    dir={language === 'en' ? 'ltr' : 'rtl'}
                 />
             </Container>
         </>

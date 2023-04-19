@@ -18,8 +18,6 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 import { setLanguage, setTheme } from '../../redux/webSlice';
 
-//TODO: menu has a problem
-
 const pages = [
     { en: 'airplane ticket', fa: ' بلیط هواپیما', to: '/airplanetickets' },
     { en: 'train ticket', fa: 'بلیط قطار', to: '/traintickets' },
@@ -35,6 +33,7 @@ const languageOptions = [
     { value: 'fa', label: 'فارسی' },
 ];
 
+//TODO: some optimization needed in small screens
 const themes = ['#32a852', '#b8b451', '#b964cc', '#1976d2'];
 
 function ResponsiveAppBar() {
@@ -180,7 +179,9 @@ function ResponsiveAppBar() {
 
                     <Box sx={{ flexGrow: 0 }}>
                         {user.itemsBag?.length > 0 && (
-                            <IconButton>
+                            <IconButton
+                                onClick={() => navigate('/reservations')}
+                            >
                                 <Badge
                                     badgeContent={user?.itemsBag?.length}
                                     color="secondary"
@@ -232,7 +233,6 @@ function ResponsiveAppBar() {
                         <Tooltip title="Open settings">
                             <IconButton
                                 onClick={handleOpenUserMenu}
-                                onBlur={handleCloseUserMenu}
                                 sx={{ p: 0 }}
                             >
                                 <Avatar
@@ -255,7 +255,7 @@ function ResponsiveAppBar() {
                                 horizontal: 'right',
                             }}
                             open={Boolean(anchorElUser)}
-                            onClose={handleCloseUserMenu}
+                            onClose={() => handleCloseUserMenu(null)}
                         >
                             {settings.map((setting) => (
                                 <MenuItem

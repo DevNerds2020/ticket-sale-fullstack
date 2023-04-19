@@ -4,75 +4,11 @@ import { Box, Typography } from '@mui/material';
 
 import styles from './TicketItemsListStyles';
 import TicketItemController from '../TicketItem/TicketItemController';
-
-const sampleData = [
-    {
-        id: 1,
-        title: 'Ticket 1',
-        price: 100,
-    },
-    {
-        id: 2,
-        title: 'Ticket 2',
-        price: 200,
-    },
-    {
-        id: 2,
-        title: 'Ticket 2',
-        price: 200,
-    },
-    {
-        id: 2,
-        title: 'Ticket 2',
-        price: 200,
-    },
-    {
-        id: 2,
-        title: 'Ticket 2',
-        price: 200,
-    },
-    {
-        id: 2,
-        title: 'Ticket 2',
-        price: 200,
-    },
-    {
-        id: 2,
-        title: 'Ticket 2',
-        price: 200,
-    },
-    {
-        id: 2,
-        title: 'Ticket 2',
-        price: 200,
-    },
-    {
-        id: 2,
-        title: 'Ticket 2',
-        price: 200,
-    },
-    {
-        id: 2,
-        title: 'Ticket 2',
-        price: 200,
-    },
-    {
-        id: 2,
-        title: 'Ticket 2',
-        price: 200,
-    },
-    {
-        id: 2,
-        title: 'Ticket 2',
-        price: 200,
-    },
-];
+import { sampleData } from '../../helpers/sampleData';
 
 const TicketItemsListView = (props) => {
-    const { items, title } = props;
-    console.log('%c Line:10 🍯 items', 'color:#6ec1c2', items);
+    const { title } = props;
 
-    //using tailwindcss
     return (
         <Box className={styles.tailwind.container}>
             <Box className={styles.tailwind.header}>

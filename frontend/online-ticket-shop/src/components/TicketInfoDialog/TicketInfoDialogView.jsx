@@ -7,35 +7,46 @@ import {
     IconButton,
 } from '@mui/material';
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 
 import styles from './TicketInfoDialogStyles';
 import { translations } from '../../utils/translations';
-import { addTicket } from '../../redux/userSlice';
 
-//TODO: items should have comments and the detail text should change
 const TicketInfoDialogView = (props) => {
-    const { item, open, handleClose } = props;
+    const { item, open, handleClose, handleBuy, boughtItem, handleRemove } =
+        props;
     const { language, theme } = useSelector((state) => state.webReducer);
-    const dispatch = useDispatch();
-
-    const handleAddToUserBag = () => {
-        dispatch(addTicket(item));
-    };
 
     return (
-        <Dialog fullScreen open={open}>
+        <Dialog open={open}>
             <DialogTitle className={styles.dialogHeader}>
                 {translations[language].ticketInfo}
             </DialogTitle>
             <DialogContent className={styles.dialogContent}>
-                {Object.keys(item).map((key) => (
-                    <p key={key}>
-                        {key}: {item[key]}
-                    </p>
-                ))}
+                <img src={item?.image} alt="ticket" />
+                {Object.keys(item).map((key) =>
+                    //if item[key] is image, render image
+                    key === 'image' ? (
+                        <></>
+                    ) : (
+                        <div
+                            key={key}
+                            className={styles.dialogItem}
+                            style={{ background: `${theme}` }}
+                            dir={language === 'en' ? 'ltr' : 'rtl'}
+                        >
+                            <p className={styles.dialogItemKey}>
+                                {translations[language][key] || key}
+                            </p>
+                            <p className={styles.dialogItemValue}>
+                                {item[key]}
+                            </p>
+                        </div>
+                    )
+                )}
             </DialogContent>
             <DialogActions>
                 <Button
@@ -50,9 +61,9 @@ const TicketInfoDialogView = (props) => {
                 <IconButton
                     size="large"
                     sx={{ color: `${theme}` }}
-                    onClick={handleAddToUserBag}
+                    onClick={boughtItem ? handleRemove : handleBuy}
                 >
-                    <AddIcon />
+                    {boughtItem ? <RemoveIcon /> : <AddIcon />}
                 </IconButton>
             </DialogActions>
         </Dialog>
@@ -65,4 +76,7 @@ TicketInfoDialogView.propTypes = {
     open: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
     item: PropTypes.object.isRequired,
+    handleBuy: PropTypes.func.isRequired,
+    boughtItem: PropTypes.bool,
+    handleRemove: PropTypes.func.isRequired,
 };

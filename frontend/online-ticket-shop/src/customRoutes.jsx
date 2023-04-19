@@ -6,6 +6,7 @@ import LoginController from './components/LoginPage/LoginController';
 import SignUpController from './components/SignUpPage/SignUpController';
 import UserDetails from './components/UserDetailsPage/UserDetails';
 import DynamicListController from './components/DynamicList/DynamicListController';
+import UserReservationsView from './components/UserReservations/UserReservationsView';
 
 const router = createBrowserRouter([
     {
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
     {
         path: '/accountinfo',
         element: <UserDetails />,
+    },
+    {
+        path: '/reservations',
+        element: <UserReservationsView />,
     },
 ]);
 
