@@ -8,10 +8,23 @@ import ResponsiveAppBar from '../CustomComponents/ResponsiveAppBar';
 import { translations } from '../../utils/translations';
 import { editUser } from '../../redux/userSlice';
 
+//TODO: some smart validations with regex needed
 const UserDetails = () => {
     const { user } = useSelector((state) => state.userReducer);
     const { language } = useSelector((state) => state.webReducer);
     const dispatch = useDispatch();
+    // const regexValidationFieldsFormat = {
+    //     name: /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/,
+    //     email: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+    //     phone: /^(\+972|0)(\-)?0?(([23489]{1}\d{7})|[5]{1}\d{8})$/,
+    //     address: /^[a-zA-Z0-9\s,'-]*$/,
+    //     city: /^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/,
+    //     state: /^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/,
+    //     zip: /^\d{5}(?:[-\s]\d{4})?$/,
+    //     country: /^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/,
+    //     nationalId: /^[0-9]{9}$/,
+    //     passportId: /^[0-9]{9}$/,
+    // };
 
     const [userForm, setUserForm] = useState({ ...user });
 

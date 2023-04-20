@@ -14,6 +14,13 @@ import RemoveIcon from '@mui/icons-material/Remove';
 
 import styles from './TicketInfoDialogStyles';
 import { translations } from '../../utils/translations';
+import ImageSlider from '../CustomComponents/ImageSlider';
+
+const testImages = [
+    'https://picsum.photos/200/300',
+    'https://picsum.photos/200/300',
+    'https://picsum.photos/200/300',
+];
 
 const TicketInfoDialogView = (props) => {
     const { item, open, handleClose, handleBuy, boughtItem, handleRemove } =
@@ -26,7 +33,7 @@ const TicketInfoDialogView = (props) => {
                 {translations[language].ticketInfo}
             </DialogTitle>
             <DialogContent className={styles.dialogContent}>
-                <img src={item?.image} alt="ticket" />
+                <ImageSlider images={testImages} />
                 {Object.keys(item).map((key) =>
                     //if item[key] is image, render image
                     key === 'image' ? (
