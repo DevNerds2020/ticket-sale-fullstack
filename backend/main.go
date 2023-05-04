@@ -1,84 +1,114 @@
 package main
 
 import (
-	"encoding/json"
-	"net/http"
-	"github.com/gorilla/mux"
+	"database/sql"
+	"fmt"
+	"log"
+	"github.com/gin-gonic/gin"
+	_ "github.com/lib/pq"
 )
 
-//structs
-type User struct {
-	ID        string `json:"id"`
-	FirstName string `json:"firstname"`
-	LastName  string `json:"lastname"`
-	Email     string `json:"email"`
-	NationalID string `json:"nationalid"`
-	PassPortID string `json:"passportid"`
-	Phone     string `json:"phone"`
-	Password  string `json:"password"`
-}
+const (
+	host     = "localhost"
+	port     = 5432
+	user     = "postgres"
+	password = ""
+	dbname   = "ticketshop"
+)
 
-type Ticket struct {
-	ID        string `json:"id"`
-	FlightID  string `json:"flightid"`
-	SeatID    string `json:"seatid"`
-	Price     string `json:"price"`
-	FirstName string `json:"firstname"`
-	LastName  string `json:"lastname"`
-	Email     string `json:"email"`
-	NationalID string `json:"nationalid"`
-	PassPortID string `json:"passportid"`
-	Phone     string `json:"phone"`
-}
-
-type Flight struct {
-	ID        string `json:"id"`
-	From      string `json:"from"`
-	To        string `json:"to"`
-	Departure string `json:"departure"`
-	Arrival   string `json:"arrival"`
-	Price     string `json:"price"`
-}
-
-type Train struct {
-	ID        string `json:"id"`
-	From      string `json:"from"`
-	To        string `json:"to"`
-	Departure string `json:"departure"`
-	Arrival   string `json:"arrival"`
-	Price     string `json:"price"`
-}
-
-type hotel struct {
-	ID        string `json:"id"`
-	Name      string `json:"name"`
-	Location  string `json:"location"`
-	Price     string `json:"price"`
-}
-
-func helloworld(q http.ResponseWriter, r *http.Request) {
-	q.Header().Set("Content-Type", "application/json")
-	q.WriteHeader(http.StatusOK)
-	json.NewEncoder(q).Encode("Hello World2")
-}
-
-func login(q http.ResponseWriter, r *http.Request) {
-	q.Header().Set("Content-Type", "application/json")
-	q.WriteHeader(http.StatusOK)
-	json.NewEncoder(q).Encode("Login")
-}
-
+var db *sql.DB
 
 func main() {
-	router := mux.NewRouter()
+	// Connect to the database
+	var err error
+	db, err = sql.Open("postgres", fmt.Sprintf("host=%s port=%d user=%s "+
+		"password=%s dbname=%s sslmode=disable",
+		host, port, user, password, dbname))
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
 
-	router.HandleFunc("/", helloworld).Methods("GET")
-	// router.HandleFunc("/users", getUsers).Methods("GET")
-	// router.HandleFunc("/users/{id}", getUser).Methods("GET")
-	// router.HandleFunc("/users", createUser).Methods("POST")
-	// router.HandleFunc("/users/{id}", updateUser).Methods("PUT")
-	// router.HandleFunc("/users/{id}", deleteUser).Methods("DELETE")
-	router.HandleFunc("/users/login", login).Methods("POST")
+	// Initialize the Gin router
+	r := gin.Default()
 
-	http.ListenAndServe(":5000", router)
+	// Define routes
+	r.GET("/users", getUsers)
+	r.GET("/users/:id", getUser)
+	r.POST("/users", createUser) 	
+	// Start the server
+	r.Run()
+}
+
+type User struct {
+	ID       int    `json:"id"`
+	Username string `json:"username"`
+	Passwrod string `json:"password"`
+	Email    string `json:"email"`
+	CreatedAt string `json:"created_at"`
+}
+
+func getUsers(c *gin.Context) {
+	// Query the database for all users
+	rows, err := db.Query("SELECT * FROM users")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+	fmt.Println("rows")
+	fmt.Println(rows)
+	fmt.Println("rows")
+
+	// Loop through the rows and create User objects
+	var users []User
+	for rows.Next() {
+		var u User
+		err := rows.Scan(&u.ID, &u.Username, &u.Passwrod, &u.Email, &u.CreatedAt)
+		if err != nil {
+			log.Fatal(err)
+		}
+		users = append(users, u)
+	}
+
+	// Return the users as JSON
+	c.JSON(200, users)
+}
+
+func getUser(c *gin.Context) {
+	// Get the user ID from the request parameters
+	id := c.Param("id")
+
+	// Query the database for the user with the specified ID
+	row := db.QueryRow("SELECT * FROM users WHERE id = $1", id)
+
+	// Create a User object from the row
+	var u User
+	//all of the fields in user struct
+	err := row.Scan(&u.ID, &u.Username, &u.Passwrod, &u.Email, &u.CreatedAt)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Return the user as JSON
+	c.JSON(200, u)
+}
+
+func createUser(c *gin.Context) {
+	// Get the user data from the request body
+	var u User
+	err := c.BindJSON(&u)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Insert the user into the database
+	_, err = db.Exec("INSERT INTO users (username, email) VALUES ($1, $2)", u.Username, u.Email)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Return a success message
+	c.JSON(200, gin.H{
+		"message": "User created",
+	})
 }
