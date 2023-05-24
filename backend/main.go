@@ -8,13 +8,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-const (
-	host     = "localhost"
-	port     = 5432
-	user     = "postgres"
-	password = ""
-	dbname   = "ticketshop"
-)
+
 
 var db *sql.DB
 
@@ -40,13 +34,7 @@ func main() {
 	r.Run()
 }
 
-type User struct {
-	ID       int    `json:"id"`
-	Username string `json:"username"`
-	Passwrod string `json:"password"`
-	Email    string `json:"email"`
-	CreatedAt string `json:"created_at"`
-}
+
 
 func getUsers(c *gin.Context) {
 	// Query the database for all users
@@ -111,4 +99,23 @@ func createUser(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"message": "User created",
 	})
+}
+
+func login(){
+}
+
+func signUp(){
+	
+}
+
+func getUserTickets(){
+
+}
+
+func deleteUserTicket(){
+
+}
+
+func addUserTicket(){
+	
 }
