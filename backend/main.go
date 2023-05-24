@@ -6,7 +6,7 @@ import (
 	"log"
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
-	// "github.com/DevNerds2020/ticket-sale-fullstack/tree/main/backend"
+	"github.com/DevNerds2020/ticket-sale-fullstack/tree/main/backend/models"
 )
 
 
