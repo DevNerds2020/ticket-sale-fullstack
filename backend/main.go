@@ -6,6 +6,7 @@ import (
 	"log"
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
+	// "github.com/DevNerds2020/ticket-sale-fullstack/tree/main/backend"
 )
 
 
@@ -13,6 +14,11 @@ import (
 var db *sql.DB
 
 func main() {
+	connectDB()
+	runServer()
+}
+
+func connectDB(){
 	// Connect to the database
 	var err error
 	db, err = sql.Open("postgres", fmt.Sprintf("host=%s port=%d user=%s "+
@@ -22,18 +28,21 @@ func main() {
 		log.Fatal(err)
 	}
 	defer db.Close()
+}
 
+func runServer(){
 	// Initialize the Gin router
 	r := gin.Default()
 
 	// Define routes
 	r.GET("/users", getUsers)
 	r.GET("/users/:id", getUser)
-	r.POST("/users", createUser) 	
+	r.POST("/users", createUser)
+	r.POST("/login", login) 	
+
 	// Start the server
 	r.Run()
 }
-
 
 
 func getUsers(c *gin.Context) {
@@ -99,13 +108,6 @@ func createUser(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"message": "User created",
 	})
-}
-
-func login(){
-}
-
-func signUp(){
-	
 }
 
 func getUserTickets(){
