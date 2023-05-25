@@ -121,8 +121,6 @@ export const sampleData = [
         price: 100,
         destinationCity: 'esfahan',
         departureCity: 'tehran',
-        departureDate: '2021-10-10',
-        returnDate: '2021-10-20',
         numberOfPassengers: 5,
     },
 ];

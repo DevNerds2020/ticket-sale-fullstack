@@ -1,4 +1,4 @@
-module main.go
+module ticketapi
 
 go 1.19
 

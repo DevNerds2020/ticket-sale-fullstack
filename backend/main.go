@@ -6,19 +6,16 @@ import (
 	"log"
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
-	"github.com/DevNerds2020/ticket-sale-fullstack/tree/main/backend/models"
+	"ticketapi/models"
 )
 
 
 
 var db *sql.DB
 
-func main() {
-	connectDB()
-	runServer()
-}
 
-func connectDB(){
+
+func main() {
 	// Connect to the database
 	var err error
 	db, err = sql.Open("postgres", fmt.Sprintf("host=%s port=%d user=%s "+
@@ -28,9 +25,7 @@ func connectDB(){
 		log.Fatal(err)
 	}
 	defer db.Close()
-}
 
-func runServer(){
 	// Initialize the Gin router
 	r := gin.Default()
 
@@ -39,11 +34,17 @@ func runServer(){
 	r.GET("/users/:id", getUser)
 	r.POST("/users", createUser)
 	r.POST("/login", login) 	
+	r.POST("/signUp", signUp)
+
+	// any root other show error 404
+	r.NoRoute(func(c *gin.Context) {
+		c.JSON(404, gin.H{"code": "PAGE_NOT_FOUND", "message": "Page not found"})
+	})
+
 
 	// Start the server
 	r.Run()
 }
-
 
 func getUsers(c *gin.Context) {
 	// Query the database for all users
@@ -57,9 +58,9 @@ func getUsers(c *gin.Context) {
 	fmt.Println("rows")
 
 	// Loop through the rows and create User objects
-	var users []User
+	var users []models.User
 	for rows.Next() {
-		var u User
+		var u models.User
 		err := rows.Scan(&u.ID, &u.Username, &u.Passwrod, &u.Email, &u.CreatedAt)
 		if err != nil {
 			log.Fatal(err)
@@ -79,7 +80,7 @@ func getUser(c *gin.Context) {
 	row := db.QueryRow("SELECT * FROM users WHERE id = $1", id)
 
 	// Create a User object from the row
-	var u User
+	var u models.User
 	//all of the fields in user struct
 	err := row.Scan(&u.ID, &u.Username, &u.Passwrod, &u.Email, &u.CreatedAt)
 	if err != nil {
@@ -92,7 +93,7 @@ func getUser(c *gin.Context) {
 
 func createUser(c *gin.Context) {
 	// Get the user data from the request body
-	var u User
+	var u models.User
 	err := c.BindJSON(&u)
 	if err != nil {
 		log.Fatal(err)
@@ -110,14 +111,42 @@ func createUser(c *gin.Context) {
 	})
 }
 
-func getUserTickets(){
+func getUserTickets(c *gin.Context){
 
 }
 
-func deleteUserTicket(){
+func deleteUserTicket(c *gin.Context){
 
 }
 
-func addUserTicket(){
-	
+func addUserTicket(c *gin.Context){
+	var ticketType string = c.PostForm("type")
+
+	switch ticketType {
+	case "hotel":
+	case "train":
+	case "airplane":
+	default:
+		c.AbortWithStatusJSON(400, gin.H{"message": "Invalid ticket type"})
+		return
+	}
+}
+
+func login(c *gin.Context){
+	var username string = c.Param("username")
+	var password string = c.Param("password")
+
+	row := db.QueryRow("SELECT * FROM users WHERE username = $1 AND password $2", username, password)
+
+	var u models.User
+
+	err := row.Scan(&u.ID, &u.Username, &u.Passwrod, &u.Email, &u.CreatedAt)
+	if err != nil {
+		log.Fatal(err)
+	}
+	c.JSON(200, u)
+}
+
+func signUp(c *gin.Context){
+	createUser(c)
 }
