@@ -38,7 +38,7 @@ const styles = {
         container: 'mt-12 overflow-hidden',
 
         mainContainer:
-            'flex flex-row justify-center items-center p-2 overflow-y-hidden overflow-scroll scrollbar-hidden scroll-smooth w-full',
+            'flex flex-row justify-center items-center overflow-y-hidden overflow-scroll scrollbar-hidden scroll-smooth w-full',
         header: 'm-8 cursor-pointer hover:scale-125',
     },
 };

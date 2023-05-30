@@ -22,6 +22,9 @@ const TicketItemsListView = (props) => {
                     '&::-webkit-scrollbar': {
                         display: 'none',
                     },
+                    ' @media only screen and (max-width: 600px)': {
+                        paddingLeft: '12rem',
+                    },
                 }}
             >
                 {sampleData.map((item, index) => (

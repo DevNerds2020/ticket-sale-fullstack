@@ -18,42 +18,46 @@ import ImageSlider from '../CustomComponents/ImageSlider';
 
 const testImages = [
     'https://picsum.photos/200/300',
-    'https://picsum.photos/200/300',
-    'https://picsum.photos/200/300',
+    'https://picsum.photos/200/299',
+    'https://picsum.photos/200/298',
+    'https://picsum.photos/200/297',
+    'https://picsum.photos/200/296',
+    'https://picsum.photos/200/295',
 ];
 
 const TicketInfoDialogView = (props) => {
     const { item, open, handleClose, handleBuy, boughtItem, handleRemove } =
         props;
     const { language, theme } = useSelector((state) => state.webReducer);
-
     return (
         <Dialog open={open}>
             <DialogTitle className={styles.dialogHeader}>
                 {translations[language].ticketInfo}
             </DialogTitle>
-            <DialogContent className={styles.dialogContent}>
-                <ImageSlider images={testImages} />
-                {Object.keys(item).map((key) =>
-                    //if item[key] is image, render image
-                    key === 'image' ? (
-                        <></>
-                    ) : (
-                        <div
-                            key={key}
-                            className={styles.dialogItem}
-                            style={{ background: `${theme}` }}
-                            dir={language === 'en' ? 'ltr' : 'rtl'}
-                        >
-                            <p className={styles.dialogItemKey}>
-                                {translations[language][key] || key}
-                            </p>
-                            <p className={styles.dialogItemValue}>
-                                {item[key]}
-                            </p>
-                        </div>
-                    )
-                )}
+            <DialogContent>
+                <div className={styles.dialogContent}>
+                    <ImageSlider images={testImages} />
+                    {Object.keys(item).map((key) =>
+                        //if item[key] is image, render image
+                        key === 'image' ? (
+                            <></>
+                        ) : (
+                            <div
+                                key={key}
+                                className={styles.dialogItem}
+                                style={{ background: `${theme}` }}
+                                dir={language === 'en' ? 'ltr' : 'rtl'}
+                            >
+                                <p className={styles.dialogItemKey}>
+                                    {translations[language][key] || key}
+                                </p>
+                                <p className={styles.dialogItemValue}>
+                                    {item[key]}
+                                </p>
+                            </div>
+                        )
+                    )}
+                </div>
             </DialogContent>
             <DialogActions>
                 <Button

@@ -1,16 +1,23 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-//TODO: haves a bug
 const ImageSlider = ({ images }) => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+    /**
+     * @function handleLeftButtonClick
+     * @returns {void} void
+     */
     const handleLeftButtonClick = () => {
         setCurrentImageIndex((prevIndex) =>
             prevIndex === 0 ? images.length - 1 : prevIndex - 1
         );
     };
 
+    /**
+     * @function handleRightButtonClick
+     * @returns {void} void
+     */
     const handleRightButtonClick = () => {
         setCurrentImageIndex((prevIndex) =>
             prevIndex === images.length - 1 ? 0 : prevIndex + 1
