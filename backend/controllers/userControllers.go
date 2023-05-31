@@ -47,6 +47,8 @@ func GetUser(c *gin.Context) {
 	// Get the user ID from the request parameters
 	id := c.Param("id")
 
+	
+
 	// Query the database for the user with the specified ID
 	row := db.QueryRow("SELECT * FROM users WHERE id = $1", id)
 
