@@ -2,10 +2,11 @@ package router
 
 import (
 	"sync"
-	"time"
-	"github.com/gin-gonic/gin"
 	"ticketapi/controllers"
-	"github.com/s12i/gin-throttle"
+	"time"
+
+	"github.com/gin-gonic/gin"
+	middleware "github.com/s12i/gin-throttle"
 )
 
 func RateLimiter(maxRequests int, duration time.Duration) gin.HandlerFunc {
@@ -40,7 +41,7 @@ func RateLimiter(maxRequests int, duration time.Duration) gin.HandlerFunc {
 	}
 }
 
-func RunRouter(){
+func RunRouter() {
 	// Initialize the Gin router
 	r := gin.Default()
 
@@ -53,16 +54,16 @@ func RunRouter(){
 
 	// Define routes
 	r.GET("/users", controllers.GetUsers)
-	r.GET("/users/:id",  controllers.GetUser)
-	r.POST("/users",  controllers.CreateUser)
-	// r.POST("/login", login) 	
-	// r.POST("/signUp", signUp)
+	r.GET("/users/:id", controllers.GetUser)
+	r.POST("/users", controllers.CreateUser)
+	r.POST("/login", controllers.Login)
+	r.POST("/register", controllers.Register)
+	r.GET("/logintest", RequireAuth, controllers.LoginTest)
 
 	// any root other show error 404
 	r.NoRoute(func(c *gin.Context) {
 		c.JSON(404, gin.H{"code": "PAGE_NOT_FOUND", "message": "Page not found"})
 	})
-
 
 	// Start the server
 	r.Run()

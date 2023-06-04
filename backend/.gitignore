@@ -1,3 +1,4 @@
 go.mode
 go.sum
-constants.go
+utils/constants.go
+.env
