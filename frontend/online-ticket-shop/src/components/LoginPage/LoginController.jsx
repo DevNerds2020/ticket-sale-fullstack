@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { LoginView } from './LoginView';
+import { API_URL } from '../../../config';
+import { toast } from 'react-toastify';
 
 const LoginController = () => {
     const [formData, setFormData] = useState({
@@ -25,6 +27,28 @@ const LoginController = () => {
     };
 
     /**
+     * @function requestLogin
+     * @returns void
+     */
+    const requestLogin = async () => {
+        const url = `${API_URL}/login`;
+        const response = await fetch(url, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        });
+        const data = await response.json();
+        if (data.error) {
+            toast.error(data.error);
+            return;
+        }
+        toast.success('Logged in successfully');
+    };
+
+    /**
      * @function handleSubmit
      * @param {*} event
      * @returns void
@@ -35,7 +59,7 @@ const LoginController = () => {
      */
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(formData);
+        requestLogin();
     };
 
     return (

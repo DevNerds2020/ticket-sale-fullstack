@@ -7,11 +7,16 @@ import SignUpController from './components/SignUpPage/SignUpController';
 import UserDetails from './components/UserDetailsPage/UserDetails';
 import DynamicListController from './components/DynamicList/DynamicListController';
 import UserReservationsView from './components/UserReservations/UserReservationsView';
+import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <HomeController />,
+        element: (
+            <PrivateRoute>
+                <HomeController />
+            </PrivateRoute>
+        ),
     },
     {
         path: '/login',
@@ -27,23 +32,43 @@ const router = createBrowserRouter([
 
     {
         path: '/airplanetickets',
-        element: <DynamicListController />,
+        element: (
+            <PrivateRoute>
+                <DynamicListController />
+            </PrivateRoute>
+        ),
     },
     {
         path: '/traintickets',
-        element: <DynamicListController />,
+        element: (
+            <PrivateRoute>
+                <DynamicListController />
+            </PrivateRoute>
+        ),
     },
     {
         path: '/hotelreservations',
-        element: <DynamicListController />,
+        element: (
+            <PrivateRoute>
+                <DynamicListController />
+            </PrivateRoute>
+        ),
     },
     {
         path: '/accountinfo',
-        element: <UserDetails />,
+        element: (
+            <PrivateRoute>
+                <UserDetails />
+            </PrivateRoute>
+        ),
     },
     {
         path: '/reservations',
-        element: <UserReservationsView />,
+        element: (
+            <PrivateRoute>
+                <UserReservationsView />
+            </PrivateRoute>
+        ),
     },
 ]);
 

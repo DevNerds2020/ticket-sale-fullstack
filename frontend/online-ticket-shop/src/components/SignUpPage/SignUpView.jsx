@@ -51,7 +51,7 @@ const SignUpView = (props) => {
                     />
                 )}
                 <TextField
-                    label={translations[language].email}
+                    label={translations[language].confirmPassword}
                     type="password"
                     name="re-enter-password"
                     required

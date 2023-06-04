@@ -41,9 +41,27 @@ func RateLimiter(maxRequests int, duration time.Duration) gin.HandlerFunc {
 	}
 }
 
+// CORSMiddleware handles CORS headers
+func CORSMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "127.0.0.1:5173")
+        c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+        c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+        c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
+
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+
+		c.Next()
+	}
+}
+
 func RunRouter() {
 	// Initialize the Gin router
 	r := gin.Default()
+	r.Use(CORSMiddleware())
 
 	//http rate limit
 	r.Use(RateLimiter(10, time.Minute)) // Limit to 10 requests per minute

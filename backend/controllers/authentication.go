@@ -17,7 +17,7 @@ func Register(c *gin.Context) {
 	var db = database.GetDB()
 
 	var body struct {
-		Username string `json:"username"`
+		Phone    string `json:"phone"`
 		Password string `json:"password"`
 		Email    string `json:"email"`
 	}
@@ -29,7 +29,7 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	var username string = body.Username
+	var phone string = body.Phone
 	var password string = body.Password
 	var email string = body.Email
 
@@ -44,12 +44,12 @@ func Register(c *gin.Context) {
 		return
 	}
 	var u models.User
-	u.Username = username
+	u.Phone = phone
 	u.Passwrod = string(hash)
 	u.Email = email
 
 	// insert to database
-	_, err = db.Exec("INSERT INTO users (username, password, email) VALUES ($1, $2, $3)", u.Username, u.Passwrod, u.Email)
+	_, err = db.Exec("INSERT INTO users (username, phone, password, email) VALUES ($1, $2, $3, $4)", u.Phone, u.Phone, u.Passwrod, u.Email)
 
 	if err != nil {
 		// log.Fatal(err)
@@ -62,14 +62,13 @@ func Register(c *gin.Context) {
 
 	c.JSON(200, gin.H{
 		"message":  "success",
-		"username": u.Username,
+		"phone":    u.Phone,
 		"password": u.Passwrod,
 		"email":    u.Email,
 	})
 }
 
 func Login(c *gin.Context) {
-
 	var db = database.GetDB()
 
 	var body struct {
@@ -92,7 +91,7 @@ func Login(c *gin.Context) {
 	if err != nil {
 		log.Fatal(err)
 		c.JSON(500, gin.H{
-			"message": "error",
+			"error": "error",
 		})
 		return
 	}
@@ -101,13 +100,13 @@ func Login(c *gin.Context) {
 	u.Username = username
 	u.Passwrod = string(hash)
 
-	// look for user in database
-	var row = db.QueryRow("SELECT * FROM users WHERE username = $1", u.Username)
+	// look for user in database where email or phone is equal to username
+	row := db.QueryRow("SELECT id, username, password, email, created_at FROM users WHERE username = $1 OR email = $1", u.Username)
 	//if user not found
 	if err := row.Scan(&u.ID, &u.Username, &u.Passwrod, &u.Email, &u.CreatedAt); err != nil {
 		// log.Fatal(err)
 		c.JSON(500, gin.H{
-			"message": "user not found",
+			"error": "user not found",
 		})
 		return
 	}
@@ -118,7 +117,7 @@ func Login(c *gin.Context) {
 	if err != nil {
 		// log.Fatal(err)
 		c.JSON(500, gin.H{
-			"message": "wrong password",
+			"error": "wrong password",
 		})
 		return
 	}
@@ -142,7 +141,7 @@ func Login(c *gin.Context) {
 
 	//The SameSite attribute is used to prevent certain types of cross-site request forgery (CSRF) attacks by specifying how cookies should be handled when making cross-site requests.
 	c.SetSameSite(http.SameSiteNoneMode)
-	c.SetCookie("Authorization", tokenString, 3600*24*30, "/", "localhost", false, true)
+	c.SetCookie("Authorization", tokenString, 3600*24*30, "", "localhost", false, true)
 	c.JSON(200, gin.H{
 		"message": "success",
 	})
