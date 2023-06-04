@@ -1,17 +1,15 @@
 package controllers
 
 import (
-	"fmt"
+	"database/sql"
 	"log"
+	"net/http"
+	"ticketapi/database"
+	"ticketapi/models"
+
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
-	"ticketapi/models"
-	"ticketapi/database"
-	"database/sql"
 )
-
-
-
 
 func GetUsers(c *gin.Context) {
 	var db *sql.DB = database.GetDB()
@@ -22,9 +20,6 @@ func GetUsers(c *gin.Context) {
 		log.Fatal(err)
 	}
 	defer rows.Close()
-	fmt.Println("rows")
-	fmt.Println(rows)
-	fmt.Println("rows")
 
 	// Loop through the rows and create User objects
 	var users []models.User
@@ -38,7 +33,7 @@ func GetUsers(c *gin.Context) {
 	}
 
 	// Return the users as JSON
-	c.JSON(200, users)
+	c.JSON(http.StatusAccepted, users)
 }
 
 func GetUser(c *gin.Context) {
@@ -46,8 +41,6 @@ func GetUser(c *gin.Context) {
 
 	// Get the user ID from the request parameters
 	id := c.Param("id")
-
-	
 
 	// Query the database for the user with the specified ID
 	row := db.QueryRow("SELECT * FROM users WHERE id = $1", id)
@@ -61,27 +54,5 @@ func GetUser(c *gin.Context) {
 	}
 
 	// Return the user as JSON
-	c.JSON(200, u)
-}
-
-func CreateUser(c *gin.Context) {
-	var db *sql.DB = database.GetDB()
-
-	// Get the user data from the request body
-	var u models.User
-	err := c.BindJSON(&u)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// Insert the user into the database
-	_, err = db.Exec("INSERT INTO users (username, email) VALUES ($1, $2)", u.Username, u.Email)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// Return a success message
-	c.JSON(200, gin.H{
-		"message": "User created",
-	})
+	c.JSON(http.StatusAccepted, u)
 }

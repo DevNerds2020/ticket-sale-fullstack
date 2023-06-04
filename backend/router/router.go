@@ -53,9 +53,11 @@ func RunRouter() {
 	r.Use(middleware.Throttle(maxEventsPerSec, maxBurstSize))
 
 	// Define routes
+	//user
 	r.GET("/users", controllers.GetUsers)
 	r.GET("/users/:id", controllers.GetUser)
-	r.POST("/users", controllers.CreateUser)
+
+	//authentication
 	r.POST("/login", controllers.Login)
 	r.POST("/register", controllers.Register)
 	r.GET("/logintest", RequireAuth, controllers.LoginTest)

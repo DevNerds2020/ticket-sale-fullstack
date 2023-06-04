@@ -2,16 +2,13 @@ package main
 
 import (
 	"database/sql"
-	_"github.com/lib/pq"
 	"ticketapi/database"
 	"ticketapi/router"
+
+	_ "github.com/lib/pq"
 )
 
-
-
-var db *sql.DB 
-
-
+var db *sql.DB
 
 func main() {
 	database.DbConnect()

@@ -19,10 +19,9 @@ func RequireAuth(c *gin.Context) {
 	//get the cookie from the request
 	cookie, err := c.Cookie("Authorization")
 
-
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{
-			"message": "unauthorized no token",
+			"message":      "unauthorized no token",
 			"errorMessage": err.Error(),
 		})
 		return
@@ -51,7 +50,6 @@ func RequireAuth(c *gin.Context) {
 		var password string = claims["password"].(string)
 		log.Println(password)
 
-
 		if err != nil {
 			log.Fatal(err)
 			c.JSON(500, gin.H{
@@ -64,7 +62,6 @@ func RequireAuth(c *gin.Context) {
 		u.Username = username
 		u.Passwrod = password
 		log.Println(u.Username)
-
 
 		//check if the user exist
 		var row = db.QueryRow("SELECT * FROM users WHERE username = $1", u.Username)
