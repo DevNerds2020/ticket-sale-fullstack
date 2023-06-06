@@ -141,9 +141,10 @@ func Login(c *gin.Context) {
 
 	//The SameSite attribute is used to prevent certain types of cross-site request forgery (CSRF) attacks by specifying how cookies should be handled when making cross-site requests.
 	c.SetSameSite(http.SameSiteNoneMode)
-	c.SetCookie("Authorization", tokenString, 3600*24*30, "", "localhost", false, true)
+	c.SetCookie("Authorization", tokenString, 3600*24*30, "/", "http://127.0.0.1:5173", false, true)
 	c.JSON(200, gin.H{
 		"message": "success",
+		"user":    u,
 	})
 }
 

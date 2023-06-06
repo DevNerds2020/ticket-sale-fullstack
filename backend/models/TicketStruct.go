@@ -8,7 +8,6 @@ type HotelTicket struct {
 	EndDate    string `json:"end_date"`
 	NumOfGuest int    `json:"num_of_guest"`
 	NumOfRoom  int    `json:"num_of_room"`
-	UserID     int    `json:"user_id"`
 }
 
 type TrainTicket struct {
@@ -18,7 +17,6 @@ type TrainTicket struct {
 	DepartureDate string `json:"departure_date"`
 	ReturnDate    string `json:"arrival_date"`
 	NumOfGuest    int    `json:"num_of_guest"`
-	UserID        int    `json:"user_id"`
 }
 
 type AirPlaneTicket struct {
@@ -28,5 +26,13 @@ type AirPlaneTicket struct {
 	DepartureDate string `json:"departure_date"`
 	ReturnDate    string `json:"arrival_date"`
 	NumOfGuest    int    `json:"num_of_guest"`
+}
+
+
+type Ticket struct {
+	ID            int    `json:"id"`
+	TicketType    string `json:"ticket_type"`
 	UserID        int    `json:"user_id"`
+	TicketDate	string `json:"ticket_date"`
+	TicketID      int    `json:"ticket_id"`
 }

@@ -24,6 +24,7 @@ func RequireAuth(c *gin.Context) {
 			"message":      "unauthorized no token",
 			"errorMessage": err.Error(),
 		})
+		c.Abort()
 		return
 	}
 
@@ -51,10 +52,10 @@ func RequireAuth(c *gin.Context) {
 		log.Println(password)
 
 		if err != nil {
-			log.Fatal(err)
 			c.JSON(500, gin.H{
 				"message": "error",
 			})
+			c.Abort()
 			return
 		}
 
@@ -64,13 +65,14 @@ func RequireAuth(c *gin.Context) {
 		log.Println(u.Username)
 
 		//check if the user exist
-		var row = db.QueryRow("SELECT * FROM users WHERE username = $1", u.Username)
+		var row = db.QueryRow("SELECT id, username, password, email, created_at FROM users WHERE username = $1", u.Username)
 		err = row.Scan(&u.ID, &u.Username, &u.Passwrod, &u.Email, &u.CreatedAt)
 		if err != nil {
 			fmt.Println(err)
 			c.JSON(http.StatusUnauthorized, gin.H{
 				"message": "unauthorized wrong username",
 			})
+			c.Abort()
 			return
 		}
 
@@ -78,6 +80,7 @@ func RequireAuth(c *gin.Context) {
 			c.JSON(http.StatusUnauthorized, gin.H{
 				"message": "unauthorized wrong password",
 			})
+			c.Abort()
 			return
 		}
 

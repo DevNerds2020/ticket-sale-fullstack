@@ -10,152 +10,157 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func AddHotelTicket(c *gin.Context) {
+func GetHotelTickets(c *gin.Context) {
 	var db *sql.DB = database.GetDB()
 
-	var body struct {
-		UserID     int    `json:"user_id"`
-		StartDate  string `json:"start_date"`
-		EndDate    string `json:"end_date"`
-		NumOfGuest int    `json:"num_of_guest"`
-		NumOfRoom  int    `json:"num_of_room"`
-	}
+	var (
+		tickets []models.HotelTicket
+		ticket  models.HotelTicket
+	)
 
-	if c.Bind(&body) != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "bad request",
-		})
-		return
-	}
-
-	var userID int = body.UserID
-	var startDate string = body.StartDate
-	var endDate string = body.EndDate
-	var numOfGuest int = body.NumOfGuest
-	var numOfRoom int = body.NumOfRoom
-
-	var ht models.HotelTicket
-
-	ht.UserID = userID
-	ht.StartDate = startDate
-	ht.EndDate = endDate
-	ht.NumOfGuest = numOfGuest
-	ht.NumOfRoom = numOfRoom
-
-	// Insert the user into the database
-	_, err := db.Exec("INSERT INTO hotel_tickets (user_id, hotel_id, start_date, end_date, num_of_guest, num_of_room) VALUES ($1, $2, $3, $4, $5, $6)", ht.UserID, ht.StartDate, ht.EndDate, ht.NumOfGuest, ht.NumOfRoom)
+	rows, err := db.Query("SELECT * FROM hotel_tickets")
 	if err != nil {
 		log.Fatal(err)
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message":      "error",
-			"errorMessage": err.Error(),
-		})
-		return
+	}
+
+	for rows.Next() {
+		err = rows.Scan(&ticket.ID, &ticket.Location, &ticket.Price, &ticket.StartDate, &ticket.EndDate, &ticket.NumOfGuest, &ticket.NumOfRoom)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		tickets = append(tickets, ticket)
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"message":      "success",
-		"user_id":      ht.UserID,
-		"start_date":   ht.StartDate,
-		"end_date":     ht.EndDate,
-		"num_of_guest": ht.NumOfGuest,
+		"status": "success",
+		"data":   tickets,
 	})
 }
 
-func AddTrainTicket(c *gin.Context) {
+func GetAirPlaneTickets(c *gin.Context) {
 	var db *sql.DB = database.GetDB()
 
-	var body struct {
-		UserID        int    `json:"user_id"`
-		DepartureDate string `json:"departure_date"`
-		ReturnDate    string `json:"return_date"`
-		NumOfGuest    int    `json:"num_of_guest"`
-	}
+	var (
+		tickets []models.AirPlaneTicket
+		ticket  models.AirPlaneTicket
+	)
 
-	if c.Bind(&body) != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "bad request",
-		})
-		return
-	}
-
-	var userID int = body.UserID
-	var departureDate string = body.DepartureDate
-	var returnDate string = body.ReturnDate
-	var numOfGuest int = body.NumOfGuest
-
-	var tt models.TrainTicket
-
-	tt.UserID = userID
-	tt.DepartureDate = departureDate
-	tt.ReturnDate = returnDate
-	tt.NumOfGuest = numOfGuest
-
-	// Insert the user into the database
-	_, err := db.Exec("INSERT INTO train_tickets (user_id, departure_date, return_date, num_of_guest) VALUES ($1, $2, $3, $4)", tt.UserID, tt.DepartureDate, tt.ReturnDate, tt.NumOfGuest)
+	rows, err := db.Query("SELECT * FROM airplane_tickets")
 	if err != nil {
 		log.Fatal(err)
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message":      "error",
-			"errorMessage": err.Error(),
-		})
-		return
+	}
+
+	for rows.Next() {
+		err = rows.Scan(&ticket.ID, &ticket.Location, &ticket.Price, &ticket.DepartureDate, &ticket.ReturnDate, &ticket.NumOfGuest)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		tickets = append(tickets, ticket)
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"message":        "success",
-		"user_id":        tt.UserID,
-		"departure_date": tt.DepartureDate,
-		"return_date":    tt.ReturnDate,
-		"num_of_guest":   tt.NumOfGuest,
+		"status": "success",
+		"data":   tickets,
 	})
 }
 
-func AddAirPlaneTicket(c *gin.Context) {
+func GetTrainTickets(c *gin.Context) {
 	var db *sql.DB = database.GetDB()
 
-	var body struct {
-		UserID        int    `json:"user_id"`
-		DepartureDate string `json:"departure_date"`
-		ReturnDate    string `json:"return_date"`
-		NumOfGuest    int    `json:"num_of_guest"`
-	}
+	var (
+		tickets []models.TrainTicket
+		ticket  models.TrainTicket
+	)
 
-	if c.Bind(&body) != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "bad request",
-		})
-		return
-	}
-
-	var userID int = body.UserID
-	var departureDate string = body.DepartureDate
-	var returnDate string = body.ReturnDate
-	var numOfGuest int = body.NumOfGuest
-
-	var apt models.AirPlaneTicket
-
-	apt.UserID = userID
-	apt.DepartureDate = departureDate
-	apt.ReturnDate = returnDate
-	apt.NumOfGuest = numOfGuest
-
-	// Insert the user into the database
-	_, err := db.Exec("INSERT INTO air_plane_tickets (user_id, departure_date, return_date, num_of_guest) VALUES ($1, $2, $3, $4)", apt.UserID, apt.DepartureDate, apt.ReturnDate, apt.NumOfGuest)
+	rows, err := db.Query("SELECT * FROM train_tickets")
 	if err != nil {
 		log.Fatal(err)
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message":      "error",
-			"errorMessage": err.Error(),
-		})
-		return
+	}
+
+	for rows.Next() {
+		err = rows.Scan(&ticket.ID, &ticket.Location, &ticket.Price, &ticket.DepartureDate, &ticket.ReturnDate, &ticket.NumOfGuest)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		tickets = append(tickets, ticket)
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"message":        "success",
-		"user_id":        apt.UserID,
-		"departure_date": apt.DepartureDate,
-		"return_date":    apt.ReturnDate,
-		"num_of_guest":   apt.NumOfGuest,
+		"status": "success",
+		"data":   tickets,
+	})
+}
+
+func GetAllTickets(c *gin.Context) {
+	var db *sql.DB = database.GetDB()
+
+	var (
+		airplaneTickets []models.AirPlaneTicket
+		trainTickets    []models.TrainTicket
+		hotelTickets    []models.HotelTicket
+		airplaneTicket  models.AirPlaneTicket
+		trainTicket     models.TrainTicket
+		hotelTicket     models.HotelTicket
+	)
+
+	rows, err := db.Query("SELECT * FROM airplane_tickets")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for rows.Next() {
+		err = rows.Scan(&airplaneTicket.ID, &airplaneTicket.Location, &airplaneTicket.Price, &airplaneTicket.DepartureDate, &airplaneTicket.ReturnDate, &airplaneTicket.NumOfGuest)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		airplaneTickets = append(airplaneTickets, airplaneTicket)
+	}
+
+	rows, err = db.Query("SELECT * FROM train_tickets")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for rows.Next() {
+		err = rows.Scan(&trainTicket.ID, &trainTicket.Location, &trainTicket.Price, &trainTicket.DepartureDate, &trainTicket.ReturnDate, &trainTicket.NumOfGuest)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		trainTickets = append(trainTickets, trainTicket)
+	}
+
+	rows, err = db.Query("SELECT * FROM hotel_tickets")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for rows.Next() {
+		err = rows.Scan(&hotelTicket.ID, &hotelTicket.Location, &hotelTicket.Price, &hotelTicket.StartDate, &hotelTicket.EndDate, &hotelTicket.NumOfGuest, &hotelTicket.NumOfRoom)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		hotelTickets = append(hotelTickets, hotelTicket)
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"status": "success",
+		"data": gin.H{
+			"airplane_tickets": airplaneTickets,
+			"train_tickets":    trainTickets,
+			"hotel_tickets":    hotelTickets,
+		},
+	})
+}
+
+func AddTicketForUser(c *gin.Context) {
+	
+	c.JSON(http.StatusOK, gin.H{
+		"status": "success",
 	})
 }

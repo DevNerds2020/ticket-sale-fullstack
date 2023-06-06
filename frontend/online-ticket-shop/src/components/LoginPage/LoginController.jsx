@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { LoginView } from './LoginView';
 import { API_URL } from '../../../config';
 import { toast } from 'react-toastify';
+import { addUser } from '../../redux/userSlice';
+import { useNavigate } from 'react-router-dom';
 
 const LoginController = () => {
     const [formData, setFormData] = useState({
@@ -12,6 +14,8 @@ const LoginController = () => {
     //if language is undefined, set it to english
     const { language, theme } =
         useSelector((state) => state.webReducer) || 'en';
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     /**
      * @function handleChange
@@ -34,7 +38,7 @@ const LoginController = () => {
         const url = `${API_URL}/login`;
         const response = await fetch(url, {
             method: 'POST',
-            credentials: 'include',
+            credentials: 'omit', // Send cookies in cross-origin requests
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -45,7 +49,14 @@ const LoginController = () => {
             toast.error(data.error);
             return;
         }
-        toast.success('Logged in successfully');
+
+        if (data.user) {
+            dispatch(addUser(data.user));
+            toast.success('Logged in successfully');
+            navigate('/');
+        } else {
+            toast.error('something went wrong');
+        }
     };
 
     /**
