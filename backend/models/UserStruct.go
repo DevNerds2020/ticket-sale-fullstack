@@ -15,7 +15,7 @@ const (
 type User struct {
 	ID              int              `json:"id"`
 	Username        string           `json:"username"`
-	Passwrod        string           `json:"password"`
+	Password        string           `json:"password"`
 	Email           string           `gorm:"unique" json:"email"`
 	CreatedAt       string           `json:"created_at"`
 	Phone           string           `json:"phone"`

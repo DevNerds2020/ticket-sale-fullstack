@@ -158,9 +158,3 @@ func GetAllTickets(c *gin.Context) {
 	})
 }
 
-func AddTicketForUser(c *gin.Context) {
-	
-	c.JSON(http.StatusOK, gin.H{
-		"status": "success",
-	})
-}

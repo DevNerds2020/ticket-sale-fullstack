@@ -61,12 +61,12 @@ func RequireAuth(c *gin.Context) {
 
 		var u models.User
 		u.Username = username
-		u.Passwrod = password
+		u.Password = password
 		log.Println(u.Username)
 
 		//check if the user exist
 		var row = db.QueryRow("SELECT id, username, password, email, created_at FROM users WHERE username = $1", u.Username)
-		err = row.Scan(&u.ID, &u.Username, &u.Passwrod, &u.Email, &u.CreatedAt)
+		err = row.Scan(&u.ID, &u.Username, &u.Password, &u.Email, &u.CreatedAt)
 		if err != nil {
 			fmt.Println(err)
 			c.JSON(http.StatusUnauthorized, gin.H{
@@ -76,7 +76,7 @@ func RequireAuth(c *gin.Context) {
 			return
 		}
 
-		if u.Passwrod != password {
+		if u.Password != password {
 			c.JSON(http.StatusUnauthorized, gin.H{
 				"message": "unauthorized wrong password",
 			})
