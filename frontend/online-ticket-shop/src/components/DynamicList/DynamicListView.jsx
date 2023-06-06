@@ -127,7 +127,7 @@ const DynamicListView = (props) => {
                         </Typography>
                     </Box>
                     <Box className={styles.mainContainer}>
-                        {data.map((item, index) => (
+                        {data?.map((item, index) => (
                             <React.Fragment key={index}>
                                 <TicketItemController item={item} />
                             </React.Fragment>

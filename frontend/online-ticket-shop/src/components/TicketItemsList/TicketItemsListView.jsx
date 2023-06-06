@@ -4,10 +4,10 @@ import { Box, Typography } from '@mui/material';
 
 import styles from './TicketItemsListStyles';
 import TicketItemController from '../TicketItem/TicketItemController';
-import { sampleData } from '../../helpers/sampleData';
+// import { sampleData } from '../../helpers/sampleData';
 
 const TicketItemsListView = (props) => {
-    const { title } = props;
+    const { data, title } = props;
 
     return (
         <Box className={styles.tailwind.container}>
@@ -27,7 +27,7 @@ const TicketItemsListView = (props) => {
                     },
                 }}
             >
-                {sampleData.map((item, index) => (
+                {data?.map((item, index) => (
                     <React.Fragment key={index}>
                         <TicketItemController item={item} />
                     </React.Fragment>
@@ -41,4 +41,5 @@ export default TicketItemsListView;
 TicketItemsListView.propTypes = {
     items: PropTypes.array.isRequired,
     title: PropTypes.string.isRequired,
+    data: PropTypes.array.isRequired,
 };
