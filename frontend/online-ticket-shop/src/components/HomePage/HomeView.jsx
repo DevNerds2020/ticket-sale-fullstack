@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 
 export const HomeView = (props) => {
     const { language, tickets } = props;
-    console.log('%c Line:9 🍇 tickets', 'color:#42b983', tickets);
     return (
         <div>
             <ResponsiveAppBar />

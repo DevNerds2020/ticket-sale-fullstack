@@ -148,6 +148,14 @@ func Login(c *gin.Context) {
 	})
 }
 
+func Logout(c *gin.Context) {
+	c.SetSameSite(http.SameSiteNoneMode)
+	c.SetCookie("Authorization", "", 3600*24*30, "/", "http://127.0.0.1:5173", false, true)
+	c.JSON(200, gin.H{
+		"message": "success",
+	})
+}
+
 func LoginTest(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"message": "success in login test",

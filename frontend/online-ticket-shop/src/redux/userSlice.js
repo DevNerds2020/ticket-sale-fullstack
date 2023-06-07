@@ -10,17 +10,19 @@ export const userSlice = createSlice({
         },
     },
     reducers: {
+        //after login
         addUser: (state, action) => {
             state.user = action.payload;
         },
         editUser: (state, action) => {
             state.user = action.payload;
         },
-        login: () => {
-            // ...
-        },
-        signUp: () => {
-            // ..
+        logout: (state) => {
+            state.user = {
+                id: null,
+                itemsBag: [],
+                itemsHistory: [],
+            };
         },
         addTicket: (state, action) => {
             const item = state.user.itemsBag.find(
@@ -53,7 +55,7 @@ export const userSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { login, signUp, addTicket, removeTicket, addUser, editUser } =
+export const { logout, addTicket, removeTicket, addUser, editUser } =
     userSlice.actions;
 
 export default userSlice.reducer;

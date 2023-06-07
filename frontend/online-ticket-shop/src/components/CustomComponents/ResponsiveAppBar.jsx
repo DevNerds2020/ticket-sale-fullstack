@@ -17,17 +17,15 @@ import { useNavigate } from 'react-router-dom';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 import { setLanguage, setTheme } from '../../redux/webSlice';
+import { logout } from '../../redux/userSlice';
+import { API_URL } from '../../../config';
 
 const pages = [
     { en: 'airplane ticket', fa: ' بلیط هواپیما', to: '/airplanetickets' },
     { en: 'train ticket', fa: 'بلیط قطار', to: '/traintickets' },
     { en: 'hotel reservation', fa: 'رزرو هتل', to: '/hotelreservations' },
 ];
-const settings = [
-    { name: 'Profile', to: '/accountinfo' },
-    { name: 'reservations', to: '/reservations' },
-    { name: 'Logout', to: '/login' },
-];
+
 const languageOptions = [
     { value: 'en', label: 'English' },
     { value: 'fa', label: 'فارسی' },
@@ -39,11 +37,48 @@ const themes = ['#32a852', '#b8b451', '#b964cc', '#1976d2'];
 function ResponsiveAppBar() {
     const { language, theme } = useSelector((state) => state.webReducer);
     const { user } = useSelector((state) => state.userReducer);
+    const [settings, setSettings] = React.useState([
+        { name: 'Profile', to: '/accountinfo' },
+        { name: 'reservations', to: '/reservations' },
+    ]);
+
+    React.useEffect(() => {
+        if (user?.id) {
+            setSettings([
+                { name: 'Profile', to: '/accountinfo' },
+                { name: 'reservations', to: '/reservations' },
+                { name: 'logout', to: '/login' },
+            ]);
+        } else {
+            setSettings([
+                { name: 'Profile', to: '/accountinfo' },
+                { name: 'reservations', to: '/reservations' },
+                { name: 'login', to: '/login' },
+            ]);
+        }
+    }, [user]);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+    const requestLogOut = async () => {
+        const url = `${API_URL}/logout`;
+        const response = await fetch(url, {
+            method: 'POST',
+
+            credentials: 'omit', // Send cookies in cross-origin requests
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await response.json();
+        if (data.message === 'success') {
+            dispatch(logout());
+            navigate('/login');
+        }
+    };
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -58,6 +93,9 @@ function ResponsiveAppBar() {
     };
 
     const handleCloseUserMenu = (link) => {
+        if (link === '/login' && user?.id) {
+            requestLogOut();
+        }
         link && navigate(link);
         setAnchorElUser(null);
     };
