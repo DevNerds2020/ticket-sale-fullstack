@@ -4,8 +4,10 @@ import (
 	"database/sql"
 	"log"
 	"net/http"
+	"strconv"
 	"ticketapi/database"
 	"ticketapi/models"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
@@ -77,13 +79,15 @@ func AddTicketForUser(c *gin.Context) {
 	var TicketType string = body.TicketType
 	var TicketID int = body.TicketID
 
+	// log.Printf("UserID: %d, TicketType: %s, TicketID: %d", UserID, TicketType, TicketID)
+
 	//see if user with id = UserID exists
 	var user models.User
-	err := db.QueryRow("SELECT id, username, password, email, created_at FROM users WHERE id = ?", UserID).Scan(&user.ID, &user.Username, &user.Password, &user.Email, &user.CreatedAt)
+	err := db.QueryRow("SELECT id, username, password, email, created_at FROM users WHERE id = $1", UserID).Scan(&user.ID, &user.Username, &user.Password, &user.Email, &user.CreatedAt)
 	if err != nil {
 		c.JSON(400, gin.H{
 			"message": "bad request",
-			"error":   "this user does not exist",
+			"error":   err.Error(),
 		})
 		return
 	}
@@ -92,7 +96,7 @@ func AddTicketForUser(c *gin.Context) {
 	case "airplane":
 		//see if airplane with id = TicketID exists
 		var airplaneTicket models.AirPlaneTicket
-		err := db.QueryRow("SELECT * FROM airplane_tickets WHERE id = ?", TicketID).Scan(&airplaneTicket.ID, &airplaneTicket.Location, &airplaneTicket.Price, &airplaneTicket.DepartureDate, &airplaneTicket.ReturnDate, &airplaneTicket.NumOfGuest)
+		err := db.QueryRow("SELECT * FROM airplane_tickets WHERE id = $1", TicketID).Scan(&airplaneTicket.ID, &airplaneTicket.Location, &airplaneTicket.Price, &airplaneTicket.DepartureDate, &airplaneTicket.ReturnDate, &airplaneTicket.NumOfGuest)
 		if err != nil {
 			c.JSON(400, gin.H{
 				"message": "bad request",
@@ -103,7 +107,7 @@ func AddTicketForUser(c *gin.Context) {
 	case "train":
 		//see if train with id = TicketID exists
 		var trainTicket models.TrainTicket
-		err := db.QueryRow("SELECT * FROM train_tickets WHERE id = ?", TicketID).Scan(&trainTicket.ID, &trainTicket.Location, &trainTicket.Price, &trainTicket.DepartureDate, &trainTicket.ReturnDate, &trainTicket.NumOfGuest)
+		err := db.QueryRow("SELECT * FROM train_tickets WHERE id = $1", TicketID).Scan(&trainTicket.ID, &trainTicket.Location, &trainTicket.Price, &trainTicket.DepartureDate, &trainTicket.ReturnDate, &trainTicket.NumOfGuest)
 		if err != nil {
 			c.JSON(400, gin.H{
 				"message": "bad request",
@@ -114,7 +118,7 @@ func AddTicketForUser(c *gin.Context) {
 	case "hotel":
 		//see if hotel with id = TicketID exists
 		var hotelTicket models.HotelTicket
-		err := db.QueryRow("SELECT * FROM hotel_tickets WHERE id = ?", TicketID).Scan(&hotelTicket.ID, &hotelTicket.Location, &hotelTicket.Price, &hotelTicket.StartDate, &hotelTicket.EndDate, &hotelTicket.NumOfGuest, &hotelTicket.NumOfRoom)
+		err := db.QueryRow("SELECT * FROM hotel_tickets WHERE id = $1", TicketID).Scan(&hotelTicket.ID, &hotelTicket.Location, &hotelTicket.Price, &hotelTicket.StartDate, &hotelTicket.EndDate, &hotelTicket.NumOfGuest, &hotelTicket.NumOfRoom)
 		if err != nil {
 			c.JSON(400, gin.H{
 				"message": "bad request",
@@ -130,12 +134,15 @@ func AddTicketForUser(c *gin.Context) {
 		return
 	}
 
+	//get current date
+	ticketDate := time.Now().Format("2006-01-02")
+
 	// add ticket to user
-	_, err = db.Exec("INSERT INTO tickets (user_id, ticket_type, ticket_id) VALUES (?, ?, ?)", UserID, TicketType, TicketID)
+	_, err = db.Exec("INSERT INTO tickets (user_id, ticket_type, ticket_id, ticket_date) VALUES ($1, $2, $3, $4)", user.ID, TicketType, TicketID, ticketDate)
 	if err != nil {
 		c.JSON(400, gin.H{
 			"message": "bad request",
-			"error":   "this ticket has already been added to this user",
+			"error":   err.Error(),
 		})
 		return
 	}
@@ -145,31 +152,45 @@ func AddTicketForUser(c *gin.Context) {
 	})
 }
 
-
 func GetUserTickets(c *gin.Context) {
 	var db *sql.DB = database.GetDB()
 
-	// Get the user ID from the request parameters
-	id := c.Param("id")
+	// Get the user ID from the request parameters string to int
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": "bad request",
+			"error":   err.Error(),
+		})
+		return
+	}
 
 	// Query the database for the user with the specified ID
 	rows, err := db.Query("SELECT * FROM tickets WHERE user_id = $1", id)
 	if err != nil {
-		log.Fatal(err)
+		c.JSON(400, gin.H{
+			"message": "bad request",
+			"error":   err.Error(),
+		})
+		return
 	}
 	defer rows.Close()
-
-	// Loop through the rows and create User objects
+	//send the tickets as json
 	var tickets []models.Ticket
 	for rows.Next() {
 		var t models.Ticket
-		err := rows.Scan(&t.ID, &t.UserID, &t.TicketType, &t.TicketID)
+		err := rows.Scan(&t.ID, &t.TicketType, &t.UserID, &t.TicketID, &t.TicketDate)
 		if err != nil {
-			log.Fatal(err)
+			c.JSON(400, gin.H{
+				"message": "bad request",
+				"error":   err.Error(),
+			})
+			return
 		}
 		tickets = append(tickets, t)
 	}
 
 	// Return the users as JSON
 	c.JSON(http.StatusAccepted, tickets)
+
 }

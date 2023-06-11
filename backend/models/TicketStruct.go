@@ -1,5 +1,7 @@
 package models
 
+import "time"
+
 type HotelTicket struct {
 	ID         int    `json:"id"`
 	Location   string `json:"location"`
@@ -28,11 +30,10 @@ type AirPlaneTicket struct {
 	NumOfGuest    int    `json:"num_of_guest"`
 }
 
-
 type Ticket struct {
-	ID            int    `json:"id"`
-	TicketType    string `json:"ticket_type"`
-	UserID        int    `json:"user_id"`
-	TicketDate	string `json:"ticket_date"`
-	TicketID      int    `json:"ticket_id"`
+	ID         int       `json:"id"`
+	TicketType string    `json:"ticket_type"`
+	UserID     int       `json:"user_id"`
+	TicketID   int       `json:"ticket_id"`
+	TicketDate time.Time `json:"ticket_date"`
 }
