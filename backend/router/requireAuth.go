@@ -23,6 +23,7 @@ func RequireAuth(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"message":      "unauthorized no token",
 			"errorMessage": err.Error(),
+			"error_code":   http.StatusUnauthorized,
 		})
 		c.Abort()
 		return
@@ -43,6 +44,7 @@ func RequireAuth(c *gin.Context) {
 		if float64(time.Now().Unix()) > claims["exp"].(float64) {
 			c.JSON(http.StatusUnauthorized, gin.H{
 				"message": "unauthorized token expired",
+				"error_code":   http.StatusUnauthorized,
 			})
 			return
 		}
@@ -54,6 +56,7 @@ func RequireAuth(c *gin.Context) {
 		if err != nil {
 			c.JSON(500, gin.H{
 				"message": "error",
+				"error_code":   http.StatusUnauthorized,
 			})
 			c.Abort()
 			return
@@ -71,6 +74,7 @@ func RequireAuth(c *gin.Context) {
 			fmt.Println(err)
 			c.JSON(http.StatusUnauthorized, gin.H{
 				"message": "unauthorized wrong username",
+				"error_code":   http.StatusUnauthorized,
 			})
 			c.Abort()
 			return
@@ -79,6 +83,7 @@ func RequireAuth(c *gin.Context) {
 		if u.Password != password {
 			c.JSON(http.StatusUnauthorized, gin.H{
 				"message": "unauthorized wrong password",
+				"error_code":   http.StatusUnauthorized,
 			})
 			c.Abort()
 			return
@@ -91,6 +96,7 @@ func RequireAuth(c *gin.Context) {
 		fmt.Println(err)
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"message": "unauthorized token invalid",
+			"error_code":   http.StatusUnauthorized,
 		})
 		return
 	}

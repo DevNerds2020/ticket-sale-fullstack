@@ -51,11 +51,20 @@ export const userSlice = createSlice({
                 }
             }
         },
+        setItemsBag: (state, action) => {
+            state.user.itemsBag = action.payload;
+        },
     },
 });
 
 // Action creators are generated for each case reducer function
-export const { logout, addTicket, removeTicket, addUser, editUser } =
-    userSlice.actions;
+export const {
+    setItemsBag,
+    logout,
+    addTicket,
+    removeTicket,
+    addUser,
+    editUser,
+} = userSlice.actions;
 
 export default userSlice.reducer;

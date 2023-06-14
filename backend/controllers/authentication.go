@@ -101,15 +101,22 @@ func Login(c *gin.Context) {
 	u.Password = string(hash)
 
 	// look for user in database where email or phone is equal to username
-	row := db.QueryRow("SELECT id, username, password, email, created_at FROM users WHERE username = $1 OR email = $1", u.Username)
-	//if user not found
-	if err := row.Scan(&u.ID, &u.Username, &u.Password, &u.Email, &u.CreatedAt); err != nil {
-		// log.Fatal(err)
+	row := db.QueryRow("SELECT * FROM users WHERE username = $1 OR email = $1", u.Username)
+	log.Println(row)
+	//handle nullable fields
+
+	// if user not found
+	if err := row.Scan(&u.ID, &u.Username, &u.Password, &u.Email, &u.CreatedAt,
+		&u.Gender, &u.Phone, &u.Address, &u.City, &u.State,
+		&u.Zip, &u.Country, &u.NationalID, &u.PassportID,
+		&u.BirthDate, &u.IsAdmin); err != nil {
+		log.Println(err)
 		c.JSON(500, gin.H{
 			"error": "user not found",
 		})
 		return
 	}
+
 	log.Println(u)
 
 	// compare password
