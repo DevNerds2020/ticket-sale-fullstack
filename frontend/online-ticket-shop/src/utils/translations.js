@@ -64,6 +64,7 @@ export const translations = {
         female: 'Female',
         other: 'Other',
         phone: 'Phone',
+        userUpdatedSuccessfully: 'User updated successfully',
     },
     fa: {
         airplaneTickets: 'بلیط هواپیما',
@@ -130,5 +131,6 @@ export const translations = {
         female: 'زن',
         other: 'دیگر',
         phone: 'تلفن',
+        userUpdatedSuccessfully: 'اطلاعات کاربر با موفقیت بروزرسانی شد',
     },
 };

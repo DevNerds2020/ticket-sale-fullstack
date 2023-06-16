@@ -117,6 +117,24 @@ func Login(c *gin.Context) {
 		return
 	}
 
+	userResponse := models.UserResponse{
+		ID:         u.ID,
+		Username:   u.Username,
+		Email:      u.Email,
+		CreatedAt:  u.CreatedAt,
+		Phone:      u.Phone,
+		Address:    u.Address.String,
+		City:       u.City.String,
+		State:      u.State.String,
+		Zip:        u.Zip.String,
+		Country:    u.Country.String,
+		NationalID: u.NationalID.String,
+		PassportID: u.PassportID.String,
+		BirthDate:  u.BirthDate.String,
+		IsAdmin:    u.IsAdmin.Bool,
+		Gender:     u.Gender.String,
+	}
+
 	log.Println(u)
 
 	// compare password
@@ -151,7 +169,7 @@ func Login(c *gin.Context) {
 	c.SetCookie("Authorization", tokenString, 3600*24*30, "/", "http://127.0.0.1:5173", false, true)
 	c.JSON(200, gin.H{
 		"message": "success",
-		"user":    u,
+		"user":    userResponse,
 	})
 }
 

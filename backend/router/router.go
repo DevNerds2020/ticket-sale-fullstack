@@ -77,6 +77,8 @@ func RunRouter() {
 	r.GET("/users/:id", controllers.GetUser)
 	r.GET("/users/:id/tickets", controllers.GetUserTickets)
 	r.POST("/users/tickets", controllers.AddTicketForUser)
+	//TODO should have require auth but gets cross origin error
+	r.PUT("/users/:id", controllers.UpdateUser)
 
 	//authentication
 	r.POST("/login", controllers.Login)
@@ -88,7 +90,7 @@ func RunRouter() {
 	r.GET("/tickets/hotel", RequireAuth, controllers.GetHotelTickets)
 	r.GET("/tickets/airplane", RequireAuth, controllers.GetAirPlaneTickets)
 	r.GET("/tickets/train", RequireAuth, controllers.GetTrainTickets)
-	r.GET("/tickets/all",RequireAuth, controllers.GetAllTickets)
+	r.GET("/tickets/all", RequireAuth, controllers.GetAllTickets)
 
 	// any root other show error 404
 	r.NoRoute(func(c *gin.Context) {

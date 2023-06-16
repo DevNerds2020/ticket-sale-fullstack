@@ -67,7 +67,6 @@ function ResponsiveAppBar() {
         const url = `${API_URL}/logout`;
         const response = await fetch(url, {
             method: 'POST',
-
             credentials: 'omit', // Send cookies in cross-origin requests
             headers: {
                 'Content-Type': 'application/json',

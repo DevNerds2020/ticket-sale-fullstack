@@ -15,6 +15,8 @@ import ResponsiveAppBar from '../CustomComponents/ResponsiveAppBar';
 import { translations } from '../../utils/translations';
 import { editUser } from '../../redux/userSlice';
 import customTypography from '../../cssdesigns';
+import { API_URL } from '../../../config';
+import { toast } from 'react-toastify';
 
 //TODO: some smart validations with regex needed
 const UserDetails = () => {
@@ -40,16 +42,50 @@ const UserDetails = () => {
         setUserForm({ ...user });
     }, [user]);
 
+    /**
+     * @function handleChange
+     * @param {*} e
+     */
     const handleChange = (e) => {
         const { name, value } = e.target;
-        if (name) dispatch(editUser({ ...userForm, [name]: value }));
+        setUserForm((prev) => ({ ...prev, [name]: value }));
+    };
+
+    /**
+     * @function updateUserInAPI
+     * @returns {void}
+     */
+    const updateUserInAPI = async () => {
+        const response = await fetch(`${API_URL}/users/${userForm.id}`, {
+            method: 'PUT',
+            credentials: 'omit',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userForm),
+        });
+        const data = await response.json();
+        return data;
+    };
+
+    /**
+     * @function handleSubmit
+     * @param {*} e
+     */
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const data = await updateUserInAPI();
+        if (data) {
+            dispatch(editUser(userForm));
+            toast.success(translations[language].userUpdatedSuccessfully);
+        }
     };
 
     return (
         <>
             <ResponsiveAppBar />
             <Container>
-                <form>
+                <form onSubmit={handleSubmit}>
                     <Typography variant="h5" mb={2} mt={5}>
                         {translations[language].userinformations}
                     </Typography>
@@ -146,26 +182,26 @@ const UserDetails = () => {
                         label={translations[language].nationalId}
                         fullWidth
                         onChange={handleChange}
-                        value={userForm?.nationalId ?? ''}
+                        value={userForm?.national_id ?? ''}
                         mb={2}
                         InputProps={{ className: styles.input }}
                         type="text"
-                        name="nationalId"
+                        name="national_id"
                         dir={language === 'en' ? 'ltr' : 'rtl'}
                     />
                     <TextField
                         label={translations[language].passportId}
                         onChange={handleChange}
                         fullWidth
-                        value={userForm?.passportId ?? ''}
+                        value={userForm?.passport_id ?? ''}
                         mb={2}
                         InputProps={{ className: styles.input }}
                         type="number"
-                        name="passportId"
+                        name="passport_id"
                         dir={language === 'en' ? 'ltr' : 'rtl'}
                     />
                     <TextField
-                        label={translations[language].birthdate}
+                        label={translations[language].birth_date}
                         type="date"
                         name="birthdate"
                         InputLabelProps={{ shrink: true }}

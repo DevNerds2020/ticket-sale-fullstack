@@ -194,3 +194,51 @@ func GetUserTickets(c *gin.Context) {
 	c.JSON(http.StatusAccepted, tickets)
 
 }
+
+func UpdateUser(c *gin.Context) {
+	var db *sql.DB = database.GetDB()
+
+	// Get the user ID from the request parameters
+	id := c.Param("id")
+
+	var body struct {
+		Name       string `json:"name"`
+		Username   string `json:"username"`
+		Email      string `json:"email"`
+		CreatedAt  string `json:"created_at"`
+		Phone      string `json:"phone"`
+		Address    string `json:"address"`
+		City       string `json:"city"`
+		State      string `json:"state"`
+		Zip        string `json:"zip"`
+		Country    string `json:"country"`
+		NationalID string `json:"national_id"`
+		PassportID string `json:"passport_id"`
+		BirthDate  string `json:"birth_date"`
+		Gender     string `json:"gender"`
+		IsAdmin    bool   `json:"is_admin"`
+		ID         int    `json:"id"`
+	}
+
+	if c.Bind(&body) != nil {
+		c.JSON(400, gin.H{
+			"message": "bad request body not match",
+		})
+		return
+	}
+
+	// Update the user in the database
+	_, err := db.Exec("UPDATE users SET username = $1, email = $2, created_at = $3, phone = $4, address = $5, city = $6, state = $7, zip = $8, country = $9, national_id = $10, passport_id = $11, birth_date = $12, gender = $13, isadmin = $14 WHERE id = $15",
+		body.Username, body.Email, body.CreatedAt, body.Phone, body.Address, body.City, body.State, body.Zip, body.Country, body.NationalID, body.PassportID, body.BirthDate, body.Gender, body.IsAdmin, id)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": "bad request",
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"status": "success",
+	})
+}
