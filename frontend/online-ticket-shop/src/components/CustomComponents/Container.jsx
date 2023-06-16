@@ -3,6 +3,7 @@ import { Box } from '@mui/material';
 import { css } from '@emotion/css';
 import PropTypes from 'prop-types';
 import ResponsiveAppBar from './ResponsiveAppBar';
+import Footer from '../Footer/Footer';
 
 const Container = ({ children }) => {
     return (
@@ -22,6 +23,7 @@ const Container = ({ children }) => {
             >
                 {children}
             </Box>
+            <Footer />
         </>
     );
 };

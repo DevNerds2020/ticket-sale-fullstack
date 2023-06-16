@@ -3,6 +3,7 @@ import TicketItemsListView from '../TicketItemsList/TicketItemsListView';
 import ResponsiveAppBar from '../CustomComponents/ResponsiveAppBar';
 import { translations } from '../../utils/translations';
 import PropTypes from 'prop-types';
+import Footer from '../Footer/Footer';
 
 export const HomeView = (props) => {
     const { language, tickets } = props;
@@ -21,6 +22,7 @@ export const HomeView = (props) => {
                 data={tickets.hotel_tickets}
                 title={translations[language].hotelReservation}
             />
+            <Footer />
         </div>
     );
 };
