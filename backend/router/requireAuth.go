@@ -101,3 +101,7 @@ func RequireAuth(c *gin.Context) {
 		return
 	}
 }
+
+func IsAdmin(c *gin.Context){
+	//TODO: to be completed
+}	
