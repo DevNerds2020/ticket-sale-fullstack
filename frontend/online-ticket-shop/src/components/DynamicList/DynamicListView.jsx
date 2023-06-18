@@ -47,19 +47,21 @@ const DynamicListView = (props) => {
                         onChange={(e) => {
                             handleFilterChange(e);
                         }}
-                        name="destinationCity"
+                        name="location"
                     />
-                    <TextField
-                        InputProps={{
-                            className: styles.filterInputs,
-                        }}
-                        label={translations[language].departureCity}
-                        type="text"
-                        onChange={(e) => {
-                            handleFilterChange(e);
-                        }}
-                        name="departureCity"
-                    />
+                    {pageMeta.pagename !== 'hotelReservation' && (
+                        <TextField
+                            InputProps={{
+                                className: styles.filterInputs,
+                            }}
+                            label={translations[language].departureCity}
+                            type="text"
+                            onChange={(e) => {
+                                handleFilterChange(e);
+                            }}
+                            name="origin_location"
+                        />
+                    )}
 
                     <TextField
                         InputProps={{
@@ -70,7 +72,7 @@ const DynamicListView = (props) => {
                         onChange={(e) => {
                             handleFilterChange(e);
                         }}
-                        name="numberOfPassengers"
+                        name="num_of_guest"
                     />
                     <TextField
                         InputProps={{
@@ -81,7 +83,7 @@ const DynamicListView = (props) => {
                         onChange={(e) => {
                             handleFilterChange(e);
                         }}
-                        name="departureDate"
+                        name="departure_date"
                         focused
                     />
                     <TextField
@@ -93,7 +95,7 @@ const DynamicListView = (props) => {
                         onChange={(e) => {
                             handleFilterChange(e);
                         }}
-                        name="returnDate"
+                        name="return_date"
                         focused
                     />
                     <FormControlLabel

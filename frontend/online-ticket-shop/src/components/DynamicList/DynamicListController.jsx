@@ -55,9 +55,19 @@ const DynamicListController = () => {
      */
     const handleFilterChange = (e) => {
         const { name, value } = e.target;
+        if (!value) {
+            setData(defaultDataRef.current);
+            return;
+        }
+
         const dataToFilter = data.length === 0 ? defaultDataRef.current : data;
         const filteredData = dataToFilter.filter((item) => {
-            if (item[name].toString().includes(value)) {
+            if (
+                item[name]
+                    .toString()
+                    .toLowerCase()
+                    .includes(value.toLowerCase())
+            ) {
                 return item;
             }
         });

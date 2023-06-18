@@ -84,13 +84,13 @@ func RunRouter() {
 	r.POST("/login", controllers.Login)
 	r.POST("/register", controllers.Register)
 	r.POST("/logout", controllers.Logout)
-	r.GET("/logintest", RequireAuth, controllers.LoginTest)
+	r.GET("/logintest", controllers.RequireAuth, controllers.LoginTest)
 
 	//tickets get
-	r.GET("/tickets/hotel", RequireAuth, controllers.GetHotelTickets)
-	r.GET("/tickets/airplane", RequireAuth, controllers.GetAirPlaneTickets)
-	r.GET("/tickets/train", RequireAuth, controllers.GetTrainTickets)
-	r.GET("/tickets/all", RequireAuth, controllers.GetAllTickets)
+	r.GET("/tickets/hotel", controllers.RequireAuth, controllers.GetHotelTickets)
+	r.GET("/tickets/airplane", controllers.RequireAuth, controllers.GetAirPlaneTickets)
+	r.GET("/tickets/train", controllers.RequireAuth, controllers.GetTrainTickets)
+	r.GET("/tickets/all", controllers.RequireAuth, controllers.GetAllTickets)
 
 	// any root other show error 404
 	r.NoRoute(func(c *gin.Context) {

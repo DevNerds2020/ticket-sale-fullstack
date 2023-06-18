@@ -78,6 +78,8 @@ const UserDetails = () => {
         if (data) {
             dispatch(editUser(userForm));
             toast.success(translations[language].userUpdatedSuccessfully);
+        } else {
+            toast.error(translations[language].userUpdatedFailed);
         }
     };
 

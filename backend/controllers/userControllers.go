@@ -17,7 +17,7 @@ func GetUsers(c *gin.Context) {
 	var db *sql.DB = database.GetDB()
 
 	// Query the database for all users
-	rows, err := db.Query("SELECT * FROM users")
+	rows, err := db.Query("SELECT id, username, password, email, created_at FROM users")
 	if err != nil {
 		log.Fatal(err)
 	}
