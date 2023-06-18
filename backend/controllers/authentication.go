@@ -110,7 +110,7 @@ func Login(c *gin.Context) {
 	if err := row.Scan(&u.ID, &u.Username, &u.Password, &u.Email, &u.CreatedAt,
 		&u.Gender, &u.Phone, &u.Address, &u.City, &u.State,
 		&u.Zip, &u.Country, &u.NationalID, &u.PassportID,
-		&u.BirthDate, &u.IsAdmin); err != nil {
+		&u.BirthDate, &u.IsAdmin, &u.Name); err != nil {
 		log.Println(err)
 		c.JSON(500, gin.H{
 			"error": "user not found",
@@ -120,6 +120,7 @@ func Login(c *gin.Context) {
 
 	userResponse := models.UserResponse{
 		ID:         u.ID,
+		Name: 		u.Name.String,
 		Username:   u.Username,
 		Email:      u.Email,
 		CreatedAt:  u.CreatedAt,

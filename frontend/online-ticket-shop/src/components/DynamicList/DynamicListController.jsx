@@ -6,8 +6,6 @@ import DynamicListView from './DynamicListView';
 import { useEffect } from 'react';
 // import { sampleData } from '../../helpers/sampleData';
 
-//TODO buttons not working good
-
 const DynamicListController = () => {
     const [data, setData] = useState();
     const [isSorted, setIsSorted] = useState(false);

@@ -13,6 +13,7 @@ type User struct {
 	Email      string         `gorm:"unique" json:"email"`
 	CreatedAt  string         `json:"created_at"`
 	Phone      string         `json:"phone"`
+	Name       sql.NullString `json"name"`
 	Address    sql.NullString `json:"address"`
 	City       sql.NullString `json:"city"`
 	State      sql.NullString `json:"state"`
@@ -20,13 +21,14 @@ type User struct {
 	Country    sql.NullString `json:"country"`
 	NationalID sql.NullString `json:"national_id"`
 	PassportID sql.NullString `json:"passport_id"`
-	BirthDate  sql.NullString   `json:"birth_date"`
+	BirthDate  sql.NullString `json:"birth_date"`
 	Gender     sql.NullString `json:"gender"`
 	IsAdmin    sql.NullBool   `json:"is_admin"`
 }
 
 type UserResponse struct {
 	ID         int    `json:"id"`
+	Name       string `json:"name"`
 	Username   string `json:"username"`
 	Email      string `json:"email"`
 	CreatedAt  string `json:"created_at"`
