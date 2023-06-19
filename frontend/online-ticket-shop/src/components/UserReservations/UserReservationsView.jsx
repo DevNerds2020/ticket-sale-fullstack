@@ -1,5 +1,5 @@
 import { List } from '@mui/material';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ResponsiveAppBar from '../CustomComponents/ResponsiveAppBar';
 import Container from '../CustomComponents/Container';
@@ -7,14 +7,20 @@ import TicketItemController from '../TicketItem/TicketItemController';
 import { translations } from '../../utils/translations';
 import { API_URL } from '../../../config';
 import { setItemsBag } from '../../redux/userSlice';
+import Loading from '../CustomComponents/Loading';
 
 const UserReservationsView = () => {
     const { user } = useSelector((state) => state.userReducer);
     const { language } = useSelector((state) => state.webReducer);
     const dispatch = useDispatch();
+    const [loading, setLoading] = useState(true);
 
     const { itemsBag } = user;
 
+    /**
+     * @function getUserReservations
+     * @returns {void}
+     */
     const getUserReservations = useCallback(async () => {
         try {
             const url = `${API_URL}/users/${user.id}/tickets`;
@@ -32,11 +38,14 @@ const UserReservationsView = () => {
         } catch (error) {
             console.log('%c Line:29 🍇 error', 'color:#2eafb0', error);
         }
+        setLoading(false);
     }, [user]);
 
     useEffect(() => {
         getUserReservations();
     }, []);
+
+    if (loading) return <Loading />;
 
     return (
         <div>

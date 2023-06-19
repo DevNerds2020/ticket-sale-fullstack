@@ -1,15 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { HomeView } from './HomeView';
 import { API_URL } from '../../../config';
 import { addTickets } from '../../redux/webSlice';
+import Loading from '../CustomComponents/Loading';
 
 export const HomeController = () => {
     const { language } = useSelector((state) => state.webReducer) || 'en';
     const { tickets } = useSelector((state) => state.webReducer);
+    const [loading, setLoading] = useState(true);
     const dispatch = useDispatch();
 
+    /**
+     * @function getTicketsFromApi
+     * @returns {void}
+     */
     const getTicketsFromApi = async () => {
         const url = `${API_URL}/tickets/all`;
         const response = await fetch(url, {
@@ -23,11 +29,14 @@ export const HomeController = () => {
         if (data.data) {
             dispatch(addTickets(data.data));
         }
+        setLoading(false);
     };
 
     useEffect(() => {
         getTicketsFromApi();
     }, []);
+
+    if (loading) return <Loading />;
 
     return <HomeView tickets={tickets} language={language} />;
 };

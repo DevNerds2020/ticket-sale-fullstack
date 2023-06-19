@@ -6,8 +6,9 @@
 export const checkUserPermissionToBuyTicket = (user) => {
     if (
         user.gender &&
-        user.passportId &&
-        user.nationalId &&
+        user.passport_id &&
+        user.national_id &&
+        isIranianNationalIdValid(user.national_id) &&
         user.zip &&
         user.state &&
         user.city &&
@@ -24,6 +25,7 @@ export const checkUserPermissionToBuyTicket = (user) => {
  * @param {*} user
  * @param {*} ticket
  * @description check if the user has permission to edit the ticket
+ * TODO if needed
  */
 export const checkUserPermissionToEditTicket = (user, ticket) => {
     console.log('%c Line:6 🍌 ticket', 'color:#fca650', ticket);
@@ -60,3 +62,40 @@ export const checkPermissionToRemoveTicketFromShoppingBag = (ticket) => {
     }
     return false;
 };
+
+/**
+ * @function isIranianNationalIdValid
+ * @param {number} nationalId
+ * @returns {boolean}
+ * @description check if the nationalId is valid
+ */
+export function isIranianNationalIdValid(nationalId) {
+    // Check if the national ID is 10 digits long
+    if (nationalId.length !== 10) {
+        return false;
+    }
+
+    // Check if all characters are digits
+    if (!/^\d+$/.test(nationalId)) {
+        return false;
+    }
+
+    // Validate the check digit
+    var checkDigit = parseInt(nationalId[9]);
+    var sum = 0;
+
+    for (var i = 0; i < 9; i++) {
+        sum += parseInt(nationalId[i]) * (10 - i);
+    }
+
+    var remainder = sum % 11;
+
+    // Handle special cases for check digit
+    if (remainder < 2 && checkDigit === remainder) {
+        return true;
+    } else if (remainder >= 2 && checkDigit === 11 - remainder) {
+        return true;
+    }
+
+    return false;
+}
