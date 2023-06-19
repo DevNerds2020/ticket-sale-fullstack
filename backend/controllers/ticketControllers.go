@@ -112,9 +112,9 @@ func GetAllTickets(c *gin.Context) {
 	}
 
 	for rows.Next() {
-		err = rows.Scan(&airplaneTicket.ID, &airplaneTicket.Location, &airplaneTicket.Price, &airplaneTicket.DepartureDate, &airplaneTicket.ReturnDate, &airplaneTicket.NumOfGuest)
+		err = rows.Scan(&airplaneTicket.ID, &airplaneTicket.Location, &airplaneTicket.Price, &airplaneTicket.DepartureDate, &airplaneTicket.ReturnDate, &airplaneTicket.NumOfGuest, &airplaneTicket.OriginLocation)
 		if err != nil {
-			log.Fatal(err)
+			log.Println(err)
 		}
 
 		airplaneTickets = append(airplaneTickets, airplaneTicket)
@@ -122,13 +122,13 @@ func GetAllTickets(c *gin.Context) {
 
 	rows, err = db.Query("SELECT * FROM train_tickets")
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 
 	for rows.Next() {
-		err = rows.Scan(&trainTicket.ID, &trainTicket.Location, &trainTicket.Price, &trainTicket.DepartureDate, &trainTicket.ReturnDate, &trainTicket.NumOfGuest)
+		err = rows.Scan(&trainTicket.ID, &trainTicket.Location, &trainTicket.Price, &trainTicket.DepartureDate, &trainTicket.ReturnDate, &trainTicket.NumOfGuest, &trainTicket.OriginLocation)
 		if err != nil {
-			log.Fatal(err)
+			log.Println(err)
 		}
 
 		trainTickets = append(trainTickets, trainTicket)
@@ -136,13 +136,13 @@ func GetAllTickets(c *gin.Context) {
 
 	rows, err = db.Query("SELECT * FROM hotel_tickets")
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 
 	for rows.Next() {
 		err = rows.Scan(&hotelTicket.ID, &hotelTicket.Location, &hotelTicket.Price, &hotelTicket.StartDate, &hotelTicket.EndDate, &hotelTicket.NumOfGuest, &hotelTicket.NumOfRoom)
 		if err != nil {
-			log.Fatal(err)
+			log.Println(err)
 		}
 
 		hotelTickets = append(hotelTickets, hotelTicket)
@@ -157,4 +157,3 @@ func GetAllTickets(c *gin.Context) {
 		},
 	})
 }
-

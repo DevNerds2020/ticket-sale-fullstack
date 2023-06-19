@@ -3,22 +3,23 @@ package models
 import "time"
 
 type HotelTicket struct {
-	ID         int    `json:"id"`
-	Location   string `json:"location"`
-	Price      int    `json:"price"`
-	StartDate  string `json:"start_date"`
-	EndDate    string `json:"end_date"`
-	NumOfGuest int    `json:"num_of_guest"`
-	NumOfRoom  int    `json:"num_of_room"`
+	ID             int    `json:"id"`
+	Location       string `json:"location"`
+	Price          int    `json:"price"`
+	StartDate      string `json:"start_date"`
+	EndDate        string `json:"end_date"`
+	NumOfGuest     int    `json:"num_of_guest"`
+	NumOfRoom      int    `json:"num_of_room"`
 }
 
 type TrainTicket struct {
-	ID            int    `json:"id"`
-	Location      string `json:"location"`
-	Price         int    `json:"price"`
-	DepartureDate string `json:"departure_date"`
-	ReturnDate    string `json:"arrival_date"`
-	NumOfGuest    int    `json:"num_of_guest"`
+	ID             int    `json:"id"`
+	Location       string `json:"location"`
+	OriginLocation string `json:"origin_location"`
+	Price          int    `json:"price"`
+	DepartureDate  time.Time `json:"departure_date"`
+	ReturnDate     string `json:"arrival_date"`
+	NumOfGuest     int    `json:"num_of_guest"`
 }
 
 type AirPlaneTicket struct {
@@ -26,6 +27,7 @@ type AirPlaneTicket struct {
 	Location      string `json:"location"`
 	Price         int    `json:"price"`
 	DepartureDate string `json:"departure_date"`
+	OriginLocation string `json:"origin_location"`
 	ReturnDate    string `json:"arrival_date"`
 	NumOfGuest    int    `json:"num_of_guest"`
 }

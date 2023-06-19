@@ -14,6 +14,5 @@ func main() {
 	database.DbConnect()
 	db = database.GetDB()
 	defer db.Close()
-
 	router.RunRouter()
 }

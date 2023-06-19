@@ -244,8 +244,8 @@ func RequireAuth(c *gin.Context) {
 		log.Println(u.Username)
 
 		//check if the user exist
-		var row = db.QueryRow("SELECT id, username, password, email, created_at FROM users WHERE username = $1", u.Username)
-		err = row.Scan(&u.ID, &u.Username, &u.Password, &u.Email, &u.CreatedAt)
+		var row = db.QueryRow("SELECT id, username, password, email, created_at, isadmin FROM users WHERE username = $1", u.Username)
+		err = row.Scan(&u.ID, &u.Username, &u.Password, &u.Email, &u.CreatedAt, &u.IsAdmin)
 		if err != nil {
 			fmt.Println(err)
 			c.JSON(http.StatusUnauthorized, gin.H{
@@ -274,6 +274,44 @@ func RequireAuth(c *gin.Context) {
 			"message":    "unauthorized token invalid",
 			"error_code": http.StatusUnauthorized,
 		})
+		return
+	}
+}
+
+func RequireAdminAuth(c *gin.Context) {
+	// Retrieve the user from the context set by RequireAuth middleware
+	user, exists := c.Get("user")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"message":    "unauthorized user not found",
+			"error_code": http.StatusUnauthorized,
+		})
+		c.Abort()
+		return
+	}
+
+	// Type-assert the user as models.User
+	u, ok := user.(models.User)
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"message":    "unauthorized user invalid",
+			"error_code": http.StatusUnauthorized,
+		})
+		c.Abort()
+		return
+	}
+
+	log.Println(u)
+
+	// Check if the user is an admin
+	if u.IsAdmin.Bool == true {
+		c.Next()
+	} else {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"message":    "unauthorized user is not an admin",
+			"error_code": http.StatusUnauthorized,
+		})
+		c.Abort()
 		return
 	}
 }

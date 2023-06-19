@@ -66,6 +66,7 @@ export const translations = {
         phone: 'Phone',
         userUpdatedSuccessfully: 'User updated successfully',
         userUpdatedFailed: 'User update failed',
+        errorFromApiDataIsCache: 'Error from api, data is cached',
     },
     fa: {
         airplaneTickets: 'بلیط هواپیما',
@@ -134,5 +135,7 @@ export const translations = {
         phone: 'تلفن',
         userUpdatedSuccessfully: 'اطلاعات کاربر با موفقیت بروزرسانی شد',
         userUpdatedFailed: 'با موفقیت بروزرسانی نشد',
+        errorFromApiDataIsCache:
+            'خطا در ارتباط با سرور و اطلاعات از حافظه کش خوانده شد',
     },
 };

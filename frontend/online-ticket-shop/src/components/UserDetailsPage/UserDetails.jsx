@@ -37,6 +37,7 @@ const UserDetails = () => {
     // };
 
     const [userForm, setUserForm] = useState({ ...user });
+    const [appUsers, setAppUsers] = useState([]);
 
     useEffect(() => {
         setUserForm({ ...user });
@@ -75,7 +76,7 @@ const UserDetails = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const data = await updateUserInAPI();
-        if (data) {
+        if (data?.status === 'success') {
             dispatch(editUser(userForm));
             toast.success(translations[language].userUpdatedSuccessfully);
         } else {
@@ -83,10 +84,56 @@ const UserDetails = () => {
         }
     };
 
+    /**
+     * @function handleGetUsersFromApi
+     * @returns {void}
+     */
+    const handleGetUsersFromApi = async () => {
+        const response = await fetch(`${API_URL}/users`, {
+            method: 'GET',
+            credentials: 'omit',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await response.json();
+        if (Array.isArray(data) && data.length > 0) {
+            console.log('%c Line:101 🥝 data', 'color:#b03734', data);
+            setAppUsers([...data]);
+        }
+    };
+
     return (
         <>
             <ResponsiveAppBar />
             <Container>
+                {userForm.is_admin && (
+                    <>
+                        <h1>welcome admin</h1>
+                        <Button onClick={handleGetUsersFromApi}>
+                            show all the users
+                        </Button>
+                        {appUsers.length > 0 && (
+                            <>
+                                {appUsers.map((appUser) => {
+                                    return (
+                                        <p key={appUser.id}>
+                                            {appUser.name}--{appUser.phone}--
+                                            {appUser.email}
+                                        </p>
+                                    );
+                                })}
+                                <Button
+                                    onClick={() => {
+                                        setAppUsers([]);
+                                    }}
+                                >
+                                    clear
+                                </Button>
+                            </>
+                        )}
+                    </>
+                )}
                 <form onSubmit={handleSubmit}>
                     <Typography variant="h5" mb={2} mt={5}>
                         {translations[language].userinformations}
@@ -205,7 +252,8 @@ const UserDetails = () => {
                     <TextField
                         label={translations[language].birth_date}
                         type="date"
-                        name="birthdate"
+                        name="birth_date"
+                        onChange={handleChange}
                         InputLabelProps={{ shrink: true }}
                         fullWidth
                         InputProps={{ className: styles.input }}

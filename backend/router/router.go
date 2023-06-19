@@ -73,7 +73,7 @@ func RunRouter() {
 	// Define routes
 
 	//user
-	r.GET("/users", controllers.GetUsers)
+	r.GET("/users", controllers.RequireAuth, controllers.RequireAdminAuth, controllers.GetUsers)
 	r.GET("/users/:id", controllers.GetUser)
 	r.GET("/users/:id/tickets", controllers.GetUserTickets)
 	r.POST("/users/tickets", controllers.AddTicketForUser)

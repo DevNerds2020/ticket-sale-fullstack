@@ -228,8 +228,8 @@ func UpdateUser(c *gin.Context) {
 	}
 
 	// Update the user in the database
-	_, err := db.Exec("UPDATE users SET username = $1, email = $2, created_at = $3, phone = $4, address = $5, city = $6, state = $7, zip = $8, country = $9, national_id = $10, passport_id = $11, birth_date = $12, gender = $13, isadmin = $14 WHERE id = $15",
-		body.Username, body.Email, body.CreatedAt, body.Phone, body.Address, body.City, body.State, body.Zip, body.Country, body.NationalID, body.PassportID, body.BirthDate, body.Gender, body.IsAdmin, id)
+	_, err := db.Exec("UPDATE users SET username = $1, email = $2, created_at = $3, phone = $4, address = $5, city = $6, state = $7, zip = $8, country = $9, national_id = $10, passport_id = $11, birth_date = $12, gender = $13, isadmin = $14, name=$15 WHERE id = $16",
+		body.Username, body.Email, body.CreatedAt, body.Phone, body.Address, body.City, body.State, body.Zip, body.Country, body.NationalID, body.PassportID, body.BirthDate, body.Gender, body.IsAdmin, body.Name, id)
 	if err != nil {
 		c.JSON(400, gin.H{
 			"message": "bad request",
