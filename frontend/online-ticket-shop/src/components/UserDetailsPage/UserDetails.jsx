@@ -18,7 +18,7 @@ import customTypography from '../../cssdesigns';
 import { API_URL } from '../../../config';
 import { toast } from 'react-toastify';
 
-//TODO: some smart validations with regex needed
+//TODO: some smart validations with regex needed (maybe in the future) not now
 const UserDetails = () => {
     const { user } = useSelector((state) => state.userReducer);
     const { language, theme } = useSelector((state) => state.webReducer);

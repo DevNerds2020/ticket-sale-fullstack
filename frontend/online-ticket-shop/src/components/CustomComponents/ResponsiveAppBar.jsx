@@ -31,7 +31,6 @@ const languageOptions = [
     { value: 'fa', label: 'فارسی' },
 ];
 
-//TODO: some optimization needed in small screens
 const themes = ['#32a852', '#b8b451', '#b964cc', '#1976d2'];
 
 function ResponsiveAppBar() {

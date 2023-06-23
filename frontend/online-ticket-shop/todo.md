@@ -1,5 +1,8 @@
-# admin page
-# validate national id 
 # add work box
-# more complex buying 
-# add editing
+# fix cors error
+
+
+
+
+maybe later:
+# add edit reservation
