@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "workbox-core": "^7.0.0",
-    "workbox-precaching": "^7.0.0"
-  }
-}
