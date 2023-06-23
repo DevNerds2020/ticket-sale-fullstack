@@ -74,9 +74,9 @@ const UserDetails = () => {
      * @function handleSubmit
      * @param {*} e
      */
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        const data = await updateUserInAPI();
+        const data = updateUserInAPI();
         if (data?.status === 'success') {
             dispatch(editUser(userForm));
             toast.success(translations[language].userUpdatedSuccessfully);
