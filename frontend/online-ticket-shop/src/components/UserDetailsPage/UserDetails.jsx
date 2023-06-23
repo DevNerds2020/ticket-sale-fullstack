@@ -37,6 +37,7 @@ const UserDetails = () => {
     // };
 
     const [userForm, setUserForm] = useState({ ...user });
+    console.log('%c Line:40 🍋 userForm', 'color:#93c0a4', userForm);
     const [appUsers, setAppUsers] = useState([]);
 
     useEffect(() => {
@@ -253,6 +254,7 @@ const UserDetails = () => {
                         label={translations[language].birth_date}
                         type="date"
                         name="birth_date"
+                        value={userForm?.birth_date ?? ''}
                         onChange={handleChange}
                         InputLabelProps={{ shrink: true }}
                         fullWidth
