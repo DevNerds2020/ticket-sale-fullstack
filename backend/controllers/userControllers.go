@@ -96,7 +96,7 @@ func AddTicketForUser(c *gin.Context) {
 	case "airplane":
 		//see if airplane with id = TicketID exists
 		var airplaneTicket models.AirPlaneTicket
-		err := db.QueryRow("SELECT * FROM airplane_tickets WHERE id = $1", TicketID).Scan(&airplaneTicket.ID, &airplaneTicket.Location, &airplaneTicket.Price, &airplaneTicket.DepartureDate, &airplaneTicket.ReturnDate, &airplaneTicket.NumOfGuest)
+		err := db.QueryRow("SELECT * FROM airplane_tickets WHERE id = $1", TicketID).Scan(&airplaneTicket.ID, &airplaneTicket.Location, &airplaneTicket.Price, &airplaneTicket.DepartureDate, &airplaneTicket.ReturnDate, &airplaneTicket.NumOfGuest, &airplaneTicket.OriginLocation)
 		if err != nil {
 			c.JSON(400, gin.H{
 				"message": "bad request",
@@ -107,7 +107,7 @@ func AddTicketForUser(c *gin.Context) {
 	case "train":
 		//see if train with id = TicketID exists
 		var trainTicket models.TrainTicket
-		err := db.QueryRow("SELECT * FROM train_tickets WHERE id = $1", TicketID).Scan(&trainTicket.ID, &trainTicket.Location, &trainTicket.Price, &trainTicket.DepartureDate, &trainTicket.ReturnDate, &trainTicket.NumOfGuest)
+		err := db.QueryRow("SELECT * FROM train_tickets WHERE id = $1", TicketID).Scan(&trainTicket.ID, &trainTicket.Location, &trainTicket.Price, &trainTicket.DepartureDate, &trainTicket.ReturnDate, &trainTicket.NumOfGuest, &trainTicket.OriginLocation)
 		if err != nil {
 			c.JSON(400, gin.H{
 				"message": "bad request",
@@ -139,6 +139,44 @@ func AddTicketForUser(c *gin.Context) {
 
 	// add ticket to user
 	_, err = db.Exec("INSERT INTO tickets (user_id, ticket_type, ticket_id, ticket_date) VALUES ($1, $2, $3, $4)", user.ID, TicketType, TicketID, ticketDate)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": "bad request",
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"status": "success",
+	})
+}
+
+func DeleteUserTicket(c *gin.Context){
+	var db *sql.DB = database.GetDB()
+
+	// Get the user ID from the request parameters string to int
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": "bad request",
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	// Get the ticket ID from the request parameters string to int
+	ticketID, err := strconv.Atoi(c.Param("ticketID"))
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": "bad request",
+			"error":   err.Error(),
+		})
+		return
+	}
+
+	// Delete the ticket with the specified ID
+	_, err = db.Exec("DELETE FROM tickets WHERE user_id = $1 AND id = $2", id, ticketID)
 	if err != nil {
 		c.JSON(400, gin.H{
 			"message": "bad request",

@@ -91,6 +91,7 @@ func RunRouter() {
 	r.GET("/tickets/airplane", controllers.RequireAuth, controllers.GetAirPlaneTickets)
 	r.GET("/tickets/train", controllers.RequireAuth, controllers.GetTrainTickets)
 	r.GET("/tickets/all", controllers.RequireAuth, controllers.GetAllTickets)
+	r.DELETE("/tickets/:id", controllers.RequireAuth, controllers.DeleteUserTicket)
 
 	// any root other show error 404
 	r.NoRoute(func(c *gin.Context) {
