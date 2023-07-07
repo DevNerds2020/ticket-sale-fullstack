@@ -152,34 +152,29 @@ func AddTicketForUser(c *gin.Context) {
 	})
 }
 
-func DeleteUserTicket(c *gin.Context){
+func DeleteUserTicket(c *gin.Context) {
 	var db *sql.DB = database.GetDB()
 
-	// Get the user ID from the request parameters string to int
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		c.JSON(400, gin.H{
-			"message": "bad request",
-			"error":   err.Error(),
-		})
-		return
-	}
+	//get user id from require auth witch we have set the user with c.Set("user", user)
+	user := c.MustGet("user").(models.User)
+	id := user.ID
 
-	// Get the ticket ID from the request parameters string to int
-	ticketID, err := strconv.Atoi(c.Param("ticketID"))
-	if err != nil {
+	log.Println(id)
+
+	ticketID := c.Param("id")
+	if ticketID == "" {
 		c.JSON(400, gin.H{
 			"message": "bad request",
-			"error":   err.Error(),
+			"error":   "ticket id does not exist",
 		})
 		return
 	}
 
 	// Delete the ticket with the specified ID
-	_, err = db.Exec("DELETE FROM tickets WHERE user_id = $1 AND id = $2", id, ticketID)
+	_, err := db.Exec("DELETE FROM tickets WHERE user_id = $1 AND id = $2", id, ticketID)
 	if err != nil {
 		c.JSON(400, gin.H{
-			"message": "bad request",
+			"message": "bad request db",
 			"error":   err.Error(),
 		})
 		return
