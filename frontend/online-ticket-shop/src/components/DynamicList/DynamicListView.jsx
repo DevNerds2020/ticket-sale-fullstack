@@ -131,7 +131,10 @@ const DynamicListView = (props) => {
                     <Box className={styles.mainContainer}>
                         {data?.map((item, index) => (
                             <React.Fragment key={index}>
-                                <TicketItemController item={item} />
+                                <TicketItemController
+                                    item={item}
+                                    itemsType={pageMeta.itemsType}
+                                />
                             </React.Fragment>
                         ))}
                     </Box>

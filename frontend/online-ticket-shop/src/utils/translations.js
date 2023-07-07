@@ -68,6 +68,9 @@ export const translations = {
         userUpdatedFailed: 'User update failed',
         errorFromApiDataIsCache: 'Error from api, data is cached',
         loginFirst: 'You must login first',
+        ticketRemovedSuccessfully: 'Ticket removed successfully',
+        ticketBoughtSuccessfully: 'Ticket bought successfully',
+        cantBuyTicket: 'You can not buy this ticket',
     },
     fa: {
         airplaneTickets: 'بلیط هواپیما',
@@ -139,5 +142,8 @@ export const translations = {
         errorFromApiDataIsCache:
             'خطا در ارتباط با سرور و اطلاعات از حافظه کش خوانده شد',
         loginFirst: 'ابتدا وارد شوید',
+        ticketRemovedSuccessfully: 'بلیط با موفقیت حذف شد',
+        ticketBoughtSuccessfully: 'بلیط با موفقیت خریداری شد',
+        cantBuyTicket: 'شما نمی توانید این بلیط را خریداری کنید',
     },
 };

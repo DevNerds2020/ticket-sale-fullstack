@@ -25,6 +25,7 @@ const DynamicListController = () => {
             setPageMeta({
                 currentPage: 1,
                 pagename: 'hotelReservation',
+                itemsType: 'hotel',
             });
             setData(tickets.hotel_tickets);
             defaultDataRef.current = tickets.hotel_tickets;
@@ -32,6 +33,7 @@ const DynamicListController = () => {
             setPageMeta({
                 currentPage: 1,
                 pagename: 'airplaneTickets',
+                itemsType: 'airplane',
             });
             setData(tickets.airplane_tickets);
             defaultDataRef.current = tickets.airplane_tickets;
@@ -39,6 +41,7 @@ const DynamicListController = () => {
             setPageMeta({
                 currentPage: 1,
                 pagename: 'trainTickets',
+                itemsType: 'train',
             });
             setData(tickets.train_tickets);
             defaultDataRef.current = tickets.train_tickets;

@@ -7,7 +7,7 @@ import TicketItemController from '../TicketItem/TicketItemController';
 // import { sampleData } from '../../helpers/sampleData';
 
 const TicketItemsListView = (props) => {
-    const { data, title } = props;
+    const { data, title, itemsType } = props;
 
     return (
         <Box className={styles.tailwind.container}>
@@ -29,7 +29,10 @@ const TicketItemsListView = (props) => {
             >
                 {data?.map((item, index) => (
                     <React.Fragment key={index}>
-                        <TicketItemController item={item} />
+                        <TicketItemController
+                            item={item}
+                            itemsType={itemsType}
+                        />
                     </React.Fragment>
                 ))}
             </Box>
@@ -42,4 +45,5 @@ TicketItemsListView.propTypes = {
     items: PropTypes.array.isRequired,
     title: PropTypes.string.isRequired,
     data: PropTypes.array.isRequired,
+    itemsType: PropTypes.string.isRequired,
 };

@@ -13,14 +13,17 @@ export const HomeView = (props) => {
             <TicketItemsListView
                 data={tickets.airplane_tickets}
                 title={translations[language].airplaneTickets}
+                itemsType="airplane"
             />
             <TicketItemsListView
                 data={tickets.train_tickets}
                 title={translations[language].trainTickets}
+                itemsType="train"
             />
             <TicketItemsListView
                 data={tickets.hotel_tickets}
                 title={translations[language].hotelReservation}
+                itemsType="hotel"
             />
             <Footer />
         </div>
