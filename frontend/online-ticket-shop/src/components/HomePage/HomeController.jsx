@@ -7,6 +7,7 @@ import { addTickets } from '../../redux/webSlice';
 import Loading from '../CustomComponents/Loading';
 import { toast } from 'react-toastify';
 import { translations } from '../../utils/translations';
+import { logout } from '../../redux/userSlice';
 
 export const HomeController = () => {
     const { language } = useSelector((state) => state.webReducer) || 'en';
@@ -31,6 +32,9 @@ export const HomeController = () => {
             const data = await response.json();
             if (data.data) {
                 dispatch(addTickets(data.data));
+            } else {
+                toast.error(translations[language].loginFirst);
+                dispatch(logout());
             }
         } catch (error) {
             toast.error(translations[language].errorFromApiDataIsCache);

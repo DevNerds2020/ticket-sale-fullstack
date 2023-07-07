@@ -67,6 +67,7 @@ export const translations = {
         userUpdatedSuccessfully: 'User updated successfully',
         userUpdatedFailed: 'User update failed',
         errorFromApiDataIsCache: 'Error from api, data is cached',
+        loginFirst: 'You must login first',
     },
     fa: {
         airplaneTickets: 'بلیط هواپیما',
@@ -137,5 +138,6 @@ export const translations = {
         userUpdatedFailed: 'با موفقیت بروزرسانی نشد',
         errorFromApiDataIsCache:
             'خطا در ارتباط با سرور و اطلاعات از حافظه کش خوانده شد',
+        loginFirst: 'ابتدا وارد شوید',
     },
 };

@@ -60,13 +60,19 @@ const UserDetails = () => {
     const updateUserInAPI = async () => {
         const response = await fetch(`${API_URL}/users/${userForm.id}`, {
             method: 'PUT',
-            credentials: 'omit',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(userForm),
         });
         const data = await response.json();
+        if (data?.status === 'success') {
+            dispatch(editUser(userForm));
+            toast.success(translations[language].userUpdatedSuccessfully);
+        } else {
+            toast.error(translations[language].userUpdatedFailed);
+        }
         return data;
     };
 
@@ -76,13 +82,7 @@ const UserDetails = () => {
      */
     const handleSubmit = (e) => {
         e.preventDefault();
-        const data = updateUserInAPI();
-        if (data?.status === 'success') {
-            dispatch(editUser(userForm));
-            toast.success(translations[language].userUpdatedSuccessfully);
-        } else {
-            toast.error(translations[language].userUpdatedFailed);
-        }
+        updateUserInAPI();
     };
 
     /**
