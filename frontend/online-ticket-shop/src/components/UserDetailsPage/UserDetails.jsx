@@ -92,7 +92,7 @@ const UserDetails = () => {
     const handleGetUsersFromApi = async () => {
         const response = await fetch(`${API_URL}/users`, {
             method: 'GET',
-            credentials: 'omit',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },
