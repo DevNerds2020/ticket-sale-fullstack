@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import {
     Box,
     Button,
@@ -37,7 +37,6 @@ const UserDetails = () => {
     // };
 
     const [userForm, setUserForm] = useState({ ...user });
-    console.log('%c Line:40 🍋 userForm', 'color:#93c0a4', userForm);
     const [appUsers, setAppUsers] = useState([]);
 
     useEffect(() => {
@@ -99,7 +98,6 @@ const UserDetails = () => {
         });
         const data = await response.json();
         if (Array.isArray(data) && data.length > 0) {
-            console.log('%c Line:101 🥝 data', 'color:#b03734', data);
             setAppUsers([...data]);
         }
     };
@@ -309,4 +307,4 @@ const UserDetails = () => {
     );
 };
 
-export default UserDetails;
+export default memo(UserDetails);

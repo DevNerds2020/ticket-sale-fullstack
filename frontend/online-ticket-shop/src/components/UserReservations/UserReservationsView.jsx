@@ -32,20 +32,23 @@ const UserReservationsView = () => {
                 },
             });
             const data = await response.json();
-            if (data) {
+            if (data.error) {
+                console.error(data.error);
+                return;
+            } else if (data) {
                 dispatch(setItemsBag(data));
             }
         } catch (error) {
             console.log('%c Line:29 🍇 error', 'color:#2eafb0', error);
         }
         setLoading(false);
-    }, [user]);
+    }, [user.id]);
 
     useEffect(() => {
         getUserReservations();
     }, []);
 
-    if (loading) return <Loading />;
+    if (loading || !Array.isArray(itemsBag)) return <Loading />;
 
     return (
         <div>
