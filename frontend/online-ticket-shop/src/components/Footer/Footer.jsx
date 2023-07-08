@@ -7,8 +7,10 @@ const Footer = () => {
                 <p className="text-white mr-4">
                     Contact: amirrezaalasti@gmail.com
                 </p>
-                <p className="text-white">Phone: 09153030778</p>
+                <br />
             </div>
+            <p className="text-white">Phone: 09153030778</p>
+            <br />
             <div className="container mx-auto text-center mt-4">
                 <p className="text-white">
                     © 2023 DevNerds2020. All rights reserved.
