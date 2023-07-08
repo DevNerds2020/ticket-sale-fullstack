@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
@@ -8,7 +8,6 @@ import { useEffect } from 'react';
 
 const DynamicListController = () => {
     const [data, setData] = useState();
-    const [isSorted, setIsSorted] = useState(false);
     const [pageMeta, setPageMeta] = useState({
         currentPage: 1,
         pagename: 'hotelReservation',
@@ -18,6 +17,7 @@ const DynamicListController = () => {
     const { tickets } = useSelector((state) => state.webReducer);
     const defaultDataRef = useRef();
 
+    const isSorted = useRef(false);
     const location = useLocation();
 
     useEffect(() => {
@@ -80,27 +80,36 @@ const DynamicListController = () => {
      * @returns void
      * @description sort data based on price
      */
-    const handleSortByCheapest = () => {
-        if (isSorted) {
-            setData([...defaultDataRef.current]);
-            setIsSorted(false);
-        } else {
-            const sortedData = defaultDataRef.current.sort(
-                (a, b) => a.price - b.price
-            );
-            setData(sortedData);
-            setIsSorted(true);
+    const handleSortByCheapest = useCallback(() => {
+        if (isSorted.current) {
+            setData(defaultDataRef.current);
+            isSorted.current = false;
+            return;
         }
-    };
+        const dataToSort = defaultDataRef.current.map((item) => item);
+        const sortedData = dataToSort.sort((a, b) => a.price - b.price);
+        setData([...sortedData]);
+        isSorted.current = true;
+    }, []);
+
+    /**
+     * @function clearFilters
+     * @returns void
+     * @description clear sort and filters
+     */
+    const clearFilters = useCallback(() => {
+        setData(defaultDataRef.current);
+        isSorted.current = false;
+    }, []);
 
     return (
         <DynamicListView
             language={language}
-            data={data}
             pageMeta={pageMeta}
-            handleFilterChange={handleFilterChange}
-            clearFilters={() => setData(defaultDataRef.current)}
+            data={data}
             handleSortByCheapest={handleSortByCheapest}
+            handleFilterChange={handleFilterChange}
+            clearFilters={clearFilters}
         />
     );
 };

@@ -17,8 +17,10 @@ import { useNavigate } from 'react-router-dom';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 import { setLanguage, setTheme } from '../../redux/webSlice';
-import { logout } from '../../redux/userSlice';
+import { logout, setItemsBag } from '../../redux/userSlice';
 import { API_URL } from '../../../config';
+import { useCallback } from 'react';
+import { useEffect } from 'react';
 
 const pages = [
     { en: 'airplane ticket', fa: ' بلیط هواپیما', to: '/airplanetickets' },
@@ -105,6 +107,33 @@ function ResponsiveAppBar() {
     const changeTheme = (event) => {
         dispatch(setTheme(event.target.value));
     };
+
+    /**
+     * @function getUserReservations
+     * @returns {void}
+     */
+    const getUserReservations = useCallback(async () => {
+        try {
+            const url = `${API_URL}/users/${user.id}/tickets`;
+            const response = await fetch(url, {
+                method: 'GET',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            const data = await response.json();
+            if (data) {
+                dispatch(setItemsBag(data));
+            }
+        } catch (error) {
+            console.log('%c Line:29 🍇 error', 'color:#2eafb0', error);
+        }
+    }, [user]);
+
+    useEffect(() => {
+        getUserReservations();
+    }, []);
 
     return (
         <AppBar position="fixed" sx={{ background: `${theme}` }}>
